@@ -1,0 +1,96 @@
+body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-size: 100%;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.login {
+    text-align: center;
+    margin: 100px auto;
+    width: 480px;
+    height: 580px;
+    background-color: rgba(25, 118, 210, 0.902);
+    border-radius: 25px;
+    box-shadow: 5px 2px 35px -7px rgb(159,166,184);
+}
+
+.login h2 {
+    margin-top: 40px;
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.login_form {
+    padding: 20px;
+}
+
+.login_form span {
+    color: #ffffff;
+    font-size: bold;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.login_form input {
+    background-color: transparent;
+    width: 320px;
+    padding: 2px;
+    text-indent: 2px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    height: 45px;
+    margin: 30px 30px 30px 5px;
+    outline: none;
+    border: 0;
+    border-bottom: 1px solid #ffffff;
+}
+
+input::placeholder {
+    color: #ffffff;
+    font-weight: 100;
+    font-size: 18px;
+}
+
+.login_btn {
+    background-color: #55b0fa;
+    border: none;
+    padding: 10px;
+    width: 220px;
+    height: 60px;
+    border-radius: 30px;
+    font-size: 20px;
+    color: black;
+    font-weight: 100;
+    margin-top: 15px;
+    transition: all 0.1s linear;
+}
+
+.login_btn:hover {
+    box-shadow: 2px 2px 15px 2px #259dff;
+    background-color: #7bc4ff;
+    /* 选择动画 */
+    animation: login_mation 0.25s;
+    
+}
+
+/* 定义动画 */
+@keyframes login_mation {
+    from {
+        background-color: #55b0fa;
+        box-shadow: 0px 0px 0px 0px #55b0fa00;
+    }
+
+    to {
+        background-color: #7bc4ff;
+        box-shadow: 2px 2px 15px 2px #259dff
+    }
+}
