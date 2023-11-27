@@ -18,6 +18,11 @@ func main() {
 	http.HandleFunc("/api/addOrUpdateResearchRoom", apiHandler.AddOrUpdateResearchRoom)
 	http.HandleFunc("/api/deleteResearchRoom", apiHandler.DeleteResearchRoom)
 
+	http.HandleFunc("/api/getAllOrSpecifiedWorkingArea", apiHandler.GetAllOrSpecifiedWorkingArea)
+	http.HandleFunc("/api/addOrUpdateWorkingArea", apiHandler.AddOrUpdateWorkingAreaSubmit)
+	http.HandleFunc("/api/addWorkingAreaForResearchRoom", apiHandler.AddWorkingAreaForResearchRoom)
+	http.HandleFunc("/api/deleteWorkingAreaForResearchRoom", apiHandler.DeleteWorkingAreaForResearchRoom)
+
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)
 
