@@ -47,6 +47,15 @@ header {
     background-color: rgba(25, 118, 210, 0.637);
 }
 
+.detail_info_area {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0px 20px;
+    height: 50px;
+    background-color: rgba(25, 118, 210, 0.637);
+}
+
 .detail_info_area_button {
     display: flex;
     justify-content: center;

@@ -14,6 +14,10 @@ func main() {
 	http.HandleFunc("/api/addOrUpdateWorker", apiHandler.AddOrUpdateWorker)
 	http.HandleFunc("/api/deleteWorkerByID", apiHandler.DeleteWorkerByID)
 
+	http.HandleFunc("/api/getAllResearchRoom", apiHandler.GetAllResearchRoom)
+	http.HandleFunc("/api/addOrUpdateResearchRoom", apiHandler.AddOrUpdateResearchRoom)
+	http.HandleFunc("/api/deleteResearchRoom", apiHandler.DeleteResearchRoom)
+
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)
 
