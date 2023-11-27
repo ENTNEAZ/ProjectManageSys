@@ -43,3 +43,58 @@ function getAllOrSpecifiedSectarySubmit(){
         }
     });
 }
+
+function addOrUpdateOrDeleteSectaryTable(){
+    // 工号 研究室号 职责
+    if (currentShow != "addOrUpdateOrDeleteSectaryTable"){
+        var html = '<table><tr><th>工号</th><th>研究室号</th><th>职责</th></tr><tr><td><input class="input_area_input" id="worker_id_input" type="text" placeholder="e.g. 1001"></td><td><input class="input_area_input" id="research_room_id_input" type="text" placeholder="e.g. 1001"></td><td><input class="input_area_input" id="job_detail_input" type="text" placeholder="e.g. 负责人"></td></tr></table><button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateSectarySubmit()">添加或修改</button> <button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateOrDeleteSectaryDelete()">删除</button>';
+        $('#input_area').empty();
+        $('#input_area').append(html);
+        currentShow = "addOrUpdateOrDeleteSectaryTable"
+    } else {
+        currentShow = "";
+        $('#input_area').empty();
+    }
+}
+
+function addOrUpdateSectarySubmit(){
+    var sectary = {};
+    sectary.worker_id = $('#worker_id_input').val();
+    sectary.research_room_id = $('#research_room_id_input').val();
+    sectary.job_detail = $('#job_detail_input').val();
+    $.ajax({
+        url: '/api/addOrUpdateSectary',
+        type: 'GET',
+        dataType: 'json',
+        timeout: 1000,
+        cache: false,
+        data: sectary,
+        error: function(data) {
+            alertify.error('添加或修改失败:' + data.responseJSON.msg);
+        },
+        success: function(data) {
+            alertify.success('添加或修改成功');
+        }
+    });
+}
+
+function addOrUpdateOrDeleteSectaryDelete(){
+    var sectary = {};
+    sectary.worker_id = $('#worker_id_input').val();
+    sectary.research_room_id = $('#research_room_id_input').val();
+    sectary.job_detail = $('#job_detail_input').val();
+    $.ajax({
+        url: '/api/deleteSectary',
+        type: 'GET',
+        dataType: 'json',
+        timeout: 1000,
+        cache: false,
+        data: sectary,
+        error: function(data) {
+            alertify.error('删除失败:' + data.responseJSON.msg);
+        },
+        success: function(data) {
+            alertify.success('删除成功');
+        }
+    });
+}

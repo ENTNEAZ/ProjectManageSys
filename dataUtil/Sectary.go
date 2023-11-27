@@ -112,3 +112,95 @@ func GetSectaryByResearchRoomID(id int) ([]dataStruct.Sectary, error) {
 	}
 	return ret, nil
 }
+
+func AddOrUpdateSectary(workerID int, researchRoomID int, info string) error {
+	if exist, err := checkSectaryExist(workerID, researchRoomID); err != nil {
+		return err
+	} else {
+		if exist {
+			return updateSectary(workerID, researchRoomID, info)
+		} else {
+			return addSectary(workerID, researchRoomID, info)
+		}
+	}
+}
+
+func checkSectaryExist(workerID int, researchRoomID int) (bool, error) {
+	sql := "SELECT * FROM research_room_sectary WHERE worker_id = ? AND research_room_id = ?"
+	db := databaseAccess.DatabaseConn()
+
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return false, err
+	}
+
+	defer stmt.Close()
+
+	rows, err := stmt.Query(workerID, researchRoomID)
+	if err != nil {
+		return false, err
+	}
+
+	if rows.Next() {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}
+
+func updateSectary(workerID int, researchRoomID int, info string) error {
+	sql := "UPDATE research_room_sectary SET job_detail = ? WHERE worker_id = ? AND research_room_id = ?"
+	db := databaseAccess.DatabaseConn()
+
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(info, workerID, researchRoomID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func addSectary(workerID int, researchRoomID int, info string) error {
+	sql := "INSERT INTO research_room_sectary (worker_id, research_room_id, job_detail) VALUES (?, ?, ?)"
+	db := databaseAccess.DatabaseConn()
+
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(workerID, researchRoomID, info)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteSectary(workerID int, researchRoomID int) error {
+	sql := "DELETE FROM research_room_sectary WHERE worker_id = ? AND research_room_id = ?"
+	db := databaseAccess.DatabaseConn()
+
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(workerID, researchRoomID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

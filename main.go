@@ -24,6 +24,8 @@ func main() {
 	http.HandleFunc("/api/deleteWorkingAreaForResearchRoom", apiHandler.DeleteWorkingAreaForResearchRoom)
 
 	http.HandleFunc("/api/getAllOrSpecifiedSectary", apiHandler.GetAllOrSpecifiedSectary)
+	http.HandleFunc("/api/addOrUpdateSectary", apiHandler.AddOrUpdateSectary)
+	http.HandleFunc("/api/deleteSectary", apiHandler.DeleteSectary)
 
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)
