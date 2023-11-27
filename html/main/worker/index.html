@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>员工管理界面</title>
+    </head>
+    <script src="/js/jquery-3.5.1.min.js"></script>
+    <script src="/js/alertify.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/alertify.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/themes/default.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <script src="./js/worker.js"></script>
+    <body>
+        <header>
+            <!--五个按钮 分别前往 员工管理界面 研究室管理界面 科研项目管理界面 第三方信息管理界面 子课题管理界面-->
+            <div id="header_button_area">
+                <button class="header_button selected">员工管理</button>
+                <button class="header_button">研究室管理</button>
+                <button class="header_button">科研项目管理</button>
+                <button class="header_button">第三方信息管理</button>
+                <button class="header_button">子课题管理</button>
+            </div>
+        </header>
+        <div id="detail_info_area">
+            <button class="detail_info_area_button" onclick="getAllWorker()">查询所有员工信息</button>
+            <button class="detail_info_area_button" onclick="addOrUpdateWorkerTable()">添加或修改员工</button>
+            <button class="detail_info_area_button" onclick="deleteWorker()">删除员工</button>
+        </div>
+        <div id="input_area">
+            
+        </div>
+        <div id="output_area">
+            
+        </div>
+    </body>
+</html>
