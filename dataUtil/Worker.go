@@ -145,7 +145,7 @@ func AddOrUpdateWorker(w dataStruct.Worker) error {
 	}
 }
 
-func DeleteWorkerByID(id int) error {
+func DeleteWorker(id int) error {
 	s := "DELETE FROM worker WHERE worker_id = ?"
 	db := databaseAccess.DatabaseConn()
 	defer db.Close()

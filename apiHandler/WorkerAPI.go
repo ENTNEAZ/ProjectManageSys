@@ -123,7 +123,7 @@ func DeleteWorkerByID(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{\"code\": -1, \"msg\": \"id is not a number\"}"))
 		return
 	}
-	err = dataUtil.DeleteWorkerByID(idi)
+	err = dataUtil.DeleteWorker(idi)
 
 	if err != nil {
 		w.WriteHeader(400)
