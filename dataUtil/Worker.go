@@ -144,3 +144,22 @@ func AddOrUpdateWorker(w dataStruct.Worker) error {
 
 	}
 }
+
+func DeleteWorkerByID(id int) error {
+	s := "DELETE FROM worker WHERE worker_id = ?"
+	db := databaseAccess.DatabaseConn()
+	defer db.Close()
+
+	stmt, err := db.Prepare(s)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

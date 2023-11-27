@@ -1,3 +1,5 @@
+var currentShow = "";
+
 function getAllWorker(){
     //在output_area生成一个表
     //jquery included
@@ -46,9 +48,15 @@ function getAllWorker(){
 }
 
 function addOrUpdateWorkerTable(){
-    var html = '<table><tr><th>工号</th><th>姓名</th><th>性别</th><th>生日</th><th>入职日期</th><th>职务/职称</th></tr><tr><td><input class="input_area_input" id="worker_id_input" type="text" placeholder="若添加用户此处留空"></td><td><input class="input_area_input" id="worker_name_input" type="text" placeholder="e.g. 张三"></td><td><input class="input_area_input" id="worker_gender_input" type="text" placeholder="e.g. 男"></td><td><input class="input_area_input" id="worker_birth_input" type="date" placeholder="生日"></td><td><input class="input_area_input" id="worker_join_time_input" type="date" placeholder="入职日期"></td><td><input class="input_area_input" id="worker_job_input" type="text" placeholder="e.g. 普通职员"></td></tr></table><button class="input_area_button" id="worker_submit_button" onclick="addOrUpdateWorkerSubmit()">添加或修改</button>';
-    $('#input_area').empty();
-    $('#input_area').append(html);
+    if (currentShow == "addOrUpdateWorkerTable"){
+        currentShow = "";
+        $('#input_area').empty();
+    } else {
+        var html = '<table><tr><th>工号</th><th>姓名</th><th>性别</th><th>生日</th><th>入职日期</th><th>职务/职称</th></tr><tr><td><input class="input_area_input" id="worker_id_input" type="text" placeholder="若添加用户此处留空"></td><td><input class="input_area_input" id="worker_name_input" type="text" placeholder="e.g. 张三"></td><td><input class="input_area_input" id="worker_gender_input" type="text" placeholder="e.g. 男"></td><td><input class="input_area_input" id="worker_birth_input" type="date" placeholder="生日"></td><td><input class="input_area_input" id="worker_join_time_input" type="date" placeholder="入职日期"></td><td><input class="input_area_input" id="worker_job_input" type="text" placeholder="e.g. 普通职员"></td></tr></table><button class="input_area_button" id="worker_submit_button" onclick="addOrUpdateWorkerSubmit()">添加或修改</button>';
+        $('#input_area').empty();
+        $('#input_area').append(html);
+        currentShow = "addOrUpdateWorkerTable"
+    }
 }
 
 function addOrUpdateWorkerSubmit(){
@@ -79,4 +87,36 @@ function addOrUpdateWorkerSubmit(){
 
 function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
-  }
+}
+
+function deleteWorkerTable(){
+    if (currentShow == "deleteWorkerTable"){
+        currentShow = "";
+        $('#input_area').empty();
+    } else {
+        var html = '<table><tr><th>工号</th></tr><tr><td><input class="input_area_input" id="worker_id_input" type="text" placeholder="e.g. 1"></td></tr></table><button class="input_area_button" id="worker_submit_button" onclick="deleteWorkerSubmit()">删除</button>';
+        $('#input_area').empty();
+        $('#input_area').append(html);
+        currentShow = "deleteWorkerTable"
+    }
+}
+
+function deleteWorkerSubmit(){
+    var id = $('#worker_id_input').val();
+    console.log(id);
+
+    $.ajax({
+        url: '/api/deleteWorkerByID',
+        type: 'GET',
+        dataType: 'json',
+        timeout: 1000,
+        data: {WorkerId: id},
+        error: function(data) {
+            console.log(data);
+            alertify.error('删除失败:' + data.responseJSON.msg);
+        },
+        success: function(data) {
+            alertify.success('删除成功');
+        }
+    });
+}

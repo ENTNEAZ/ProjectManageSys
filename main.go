@@ -12,6 +12,7 @@ func main() {
 	http.HandleFunc("/api/getWorkerByID", apiHandler.GetWorkerByID)
 	http.HandleFunc("/api/getAllWorker", apiHandler.GetAllWorker)
 	http.HandleFunc("/api/addOrUpdateWorker", apiHandler.AddOrUpdateWorker)
+	http.HandleFunc("/api/deleteWorkerByID", apiHandler.DeleteWorkerByID)
 
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)

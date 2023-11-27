@@ -75,3 +75,7 @@ th {
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.selected {
+    background-color: rgb(54, 137, 220);
+}

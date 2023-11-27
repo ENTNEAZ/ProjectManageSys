@@ -113,3 +113,24 @@ func AddOrUpdateWorker(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 	w.Write([]byte("{\"code\": 0, \"msg\": \"success\"}"))
 }
+
+func DeleteWorkerByID(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	id := r.URL.Query().Get("WorkerId")
+	idi, err := strconv.Atoi(id)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"id is not a number\"}"))
+		return
+	}
+	err = dataUtil.DeleteWorkerByID(idi)
+
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"delete worker by id failed\"}"))
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write([]byte("{\"code\": 0, \"msg\": \"success\"}"))
+}
