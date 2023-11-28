@@ -39,6 +39,8 @@ func main() {
 	http.HandleFunc("/api/findAllParticipantInProject", apiHandler.FindAllParticipantInProject)
 	http.HandleFunc("/api/addOrDeleteProjectParticipant", apiHandler.AddOrDeleteProjectParticipant)
 
+	http.HandleFunc("/api/getAllOrSpecifiedProjectFruit", apiHandler.GetAllOrSpecifiedProjectFruit)
+	http.HandleFunc("/api/addOrUpdateOrDeleteProjectFruit", apiHandler.AddOrUpdateOrDeleteProjectFruit)
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)
 

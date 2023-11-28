@@ -318,3 +318,119 @@ func DeleteProjectParticipant(project_id, project_participant_id string) error {
 	}
 	return nil
 }
+
+func GetAllOrSpecifiedProjectFruit(idname string) ([]byte, error) {
+	sql := "select project.project_id,project_name,project.worker_id,worker.worker_name,project_fruit_id,project_fruit_get_time,project_fruit_master_rank,project_fruit_type,project_fruit_detail from project join project_project_fruit on project.project_id = project_project_fruit.project_id join worker on project.worker_id = worker.worker_id  where project.project_id = ? or project_name like ?"
+	if idname == "" {
+		sql = "select project.project_id,project_name,project.worker_id,worker.worker_name,project_fruit_id,project_fruit_get_time,project_fruit_master_rank,project_fruit_type,project_fruit_detail from project join project_project_fruit on project.project_id = project_project_fruit.project_id join worker on project.worker_id = worker.worker_id  where 1 = 1 or project.project_id = ? or project_name like ?"
+	}
+
+	idnamei, err := strconv.Atoi(idname)
+	if err != nil {
+		idnamei = 0
+	}
+
+	db := databaseAccess.DatabaseConn()
+	rows, err := db.Query(sql, idnamei, "%"+idname+"%")
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var ret []byte
+	ret = append(ret, '[')
+	for rows.Next() {
+		var project_id, project_name, worker_id, worker_name, project_fruit_id, project_fruit_get_time, project_fruit_master_rank, project_fruit_type, project_fruit_detail string
+		err := rows.Scan(&project_id, &project_name, &worker_id, &worker_name, &project_fruit_id, &project_fruit_get_time, &project_fruit_master_rank, &project_fruit_type, &project_fruit_detail)
+		if err != nil {
+			return nil, err
+		}
+		ret = append(ret, []byte("{\"project_id\":")...)
+		ret = append(ret, []byte(project_id)...)
+		ret = append(ret, []byte(",\"project_name\":\"")...)
+		ret = append(ret, []byte(project_name)...)
+		ret = append(ret, []byte("\",\"worker_id\":")...)
+		ret = append(ret, []byte(worker_id)...)
+		ret = append(ret, []byte(",\"worker_name\":\"")...)
+		ret = append(ret, []byte(worker_name)...)
+		ret = append(ret, []byte("\",\"project_fruit_id\":")...)
+		ret = append(ret, []byte(project_fruit_id)...)
+		ret = append(ret, []byte(",\"project_fruit_get_time\":\"")...)
+		ret = append(ret, []byte(project_fruit_get_time)...)
+		ret = append(ret, []byte("\",\"project_fruit_master_rank\":")...)
+		ret = append(ret, []byte(project_fruit_master_rank)...)
+		ret = append(ret, []byte(",\"project_fruit_type\":\"")...)
+		ret = append(ret, []byte(project_fruit_type)...)
+		ret = append(ret, []byte("\",\"project_fruit_detail\":\"")...)
+		ret = append(ret, []byte(project_fruit_detail)...)
+		ret = append(ret, []byte("\"},")...)
+	}
+
+	if len(ret) > 1 {
+		ret = ret[:len(ret)-1]
+	}
+
+	ret = append(ret, ']')
+	return ret, nil
+
+}
+
+func AddOrUpdateProjectFruit(project_id, worker_id, project_fruit_id, project_fruit_get_time, project_fruit_master_rank, project_fruit_type, project_fruit_detail string) error {
+	sql := "INSERT INTO project_project_fruit (project_id,worker_id,project_fruit_get_time,project_fruit_master_rank,project_fruit_type,project_fruit_detail) VALUES (?,?,?,?,?,?)"
+	if project_fruit_id != "" {
+		sql = "UPDATE project_project_fruit SET project_id = ?,worker_id = ?,project_fruit_get_time = ?,project_fruit_master_rank = ?,project_fruit_type = ?,project_fruit_detail = ? WHERE project_fruit_id = ?"
+	}
+
+	db := databaseAccess.DatabaseConn()
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	project_idi, err := strconv.Atoi(project_id)
+	if err != nil {
+		return err
+	}
+	worker_idi, err := strconv.Atoi(worker_id)
+	if err != nil {
+		return err
+	}
+	project_fruit_master_ranki, err := strconv.Atoi(project_fruit_master_rank)
+	if err != nil {
+		return err
+	}
+
+	if project_fruit_id != "" {
+		_, err = stmt.Exec(project_idi, worker_idi, project_fruit_get_time, project_fruit_master_ranki, project_fruit_type, project_fruit_detail, project_fruit_id)
+	} else {
+		_, err = stmt.Exec(project_idi, worker_idi, project_fruit_get_time, project_fruit_master_ranki, project_fruit_type, project_fruit_detail)
+	}
+
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteProjectFruit(project_fruit_id string) error {
+	sql := "DELETE FROM project_project_fruit WHERE project_fruit_id = ?"
+	db := databaseAccess.DatabaseConn()
+	stmt, err := db.Prepare(sql)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	project_fruit_idi, err := strconv.Atoi(project_fruit_id)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(project_fruit_idi)
+	if err != nil {
+		return err
+	}
+	return nil
+}
