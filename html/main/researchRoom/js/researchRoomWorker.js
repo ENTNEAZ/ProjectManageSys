@@ -44,7 +44,7 @@ function getAllOrSpecifiedResearchRoomWorkerSubmit() {
 
 function addOrUpdateOrDeleteResearchRoomWorkerTable(){
     if (currentShow != "addOrUpdateOrDeleteResearchRoomWorkerTable"){
-        var html = '<table><tr><th>工号</th><th>研究室号</th><th>职责</th></tr><tr><td><input class="input_area_input" id="worker_id_input" type="text" placeholder="e.g. 1001"></td><td><input class="input_area_input" id="research_room_id_input" type="text" placeholder="e.g. 1001"></td><td><input class="input_area_input" id="job_detail_input" type="text" placeholder="e.g. 负责人"></td></tr></table><button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateResearchRoomWorkerSubmit()">添加或修改</button> <button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateOrDeleteResearchRoomWorkerDelete()">删除</button>';
+        var html = '<table><tr><th>工号</th><th>研究室号</th><th>方向</th></tr><tr><td><input class="input_area_input" id="worker_id_input" type="text" placeholder="e.g. 1001"></td><td><input class="input_area_input" id="research_room_id_input" type="text" placeholder="e.g. 1001"></td><td><input class="input_area_input" id="job_detail_input" type="text" placeholder="e.g. AI模型的处理"></td></tr></table><button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateResearchRoomWorkerSubmit()">添加或修改</button> <button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateOrDeleteResearchRoomWorkerDelete()">删除</button>';
         $('#input_area').empty();
         $('#input_area').append(html);
         currentShow = "addOrUpdateOrDeleteResearchRoomWorkerTable"

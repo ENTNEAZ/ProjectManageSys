@@ -11,8 +11,11 @@
     <link rel="stylesheet" type="text/css" href="/css/alertify.min.css">
     <link rel="stylesheet" type="text/css" href="/css/themes/default.min.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
-    <script src="./js/worker.js"></script>
+    <script src="./js/project.js"></script>
     <script src="../js/jump.js"></script>
+    <script>
+        var currentShow = "";
+    </script>
     <body>
         <header>
             <!--五个按钮 分别前往 员工管理界面 研究室管理界面 科研项目管理界面 第三方信息管理界面 子课题管理界面-->
@@ -25,9 +28,16 @@
             </div>
         </header>
         <div id="detail_info_area">
-            <button class="detail_info_area_button" onclick="getAllWorker()">查询所有员工信息</button>
-            <button class="detail_info_area_button" onclick="addOrUpdateWorkerTable()">添加或修改员工</button>
-            <button class="detail_info_area_button" onclick="deleteWorkerTable()">删除员工</button>
+            <button class="detail_info_area_button" onclick="getAllOrSpecifiedProjectTable()">查询项目科研项目</button>
+            <button class="detail_info_area_button" onclick="addOrUpdateOrDeleteProjectTable()">添加或修改或删除科研项目</button>
+        </div>
+        <div id="detail_info_area">
+            <button class="detail_info_area_button" onclick="getAllOrSpecifiedProjectWorkerTable()">查询项目科研项目的科研人员</button>
+            <button class="detail_info_area_button" onclick="addOrUpdateOrDeleteProjectWorkerTable()">添加或删除科研项目的科研人员</button>
+        </div>
+        <div id="detail_info_area">
+            <button class="detail_info_area_button" onclick="getAllOrSpecifiedProjectHelperTable()">查询项目科研项目的合作方</button>
+            <button class="detail_info_area_button" onclick="addOrUpdateOrDeleteProjectHelperTable()">添加或删除科研项目的合作方</button>
         </div>
         <div id="input_area">
             
