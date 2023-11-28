@@ -48,6 +48,9 @@ func main() {
 	http.HandleFunc("/api/addOrUpdateOrDelete3rdPartContact", apiHandler.AddOrUpdateOrDelete3rdPartContact)
 	http.HandleFunc("/api/addOrDeleteContactRelation", apiHandler.AddOrDeleteContactRelation)
 
+	http.HandleFunc("/api/findAllSubProjectInProject", apiHandler.FindAllSubProjectInProject)
+	http.HandleFunc("/api/addOrUpdateOrDeleteSpecifiedSubProject", apiHandler.AddOrUpdateOrDeleteSpecifiedSubProject)
+
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)
 
