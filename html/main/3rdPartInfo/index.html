@@ -11,7 +11,10 @@
     <link rel="stylesheet" type="text/css" href="/css/alertify.min.css">
     <link rel="stylesheet" type="text/css" href="/css/themes/default.min.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
-    <script src="./js/worker.js"></script>
+    <script src="./js/ThirdPartInfo.js"></script>
+    <script>
+        var currentShow = "";
+    </script>
     <script src="../js/jump.js"></script>
     <body>
         <header>
@@ -25,9 +28,13 @@
             </div>
         </header>
         <div id="detail_info_area">
-            <button class="detail_info_area_button" onclick="getAllWorker()">查询所有员工信息</button>
-            <button class="detail_info_area_button" onclick="addOrUpdateWorkerTable()">添加或修改员工</button>
-            <button class="detail_info_area_button" onclick="deleteWorkerTable()">删除员工</button>
+            <button class="detail_info_area_button" onclick="getAllOrSpecified3rdPartInfoTable()">查询所有第三方信息</button>
+            <button class="detail_info_area_button" onclick="addOrUpdateOrDelete3rdPartInfoTable()">添加或修改或删除第三方信息</button>
+        </div>
+        <div id="detail_info_area">
+            <button class="detail_info_area_button" onclick="getAllOrSpecified3rdPartContactTable()">查询某第三方负责人/联系人信息</button>
+            <button class="detail_info_area_button" onclick="addOrUpdateOrDelete3rdPartContactrTable()">添加或修改或删除负责人/联系人信息</button>
+            <button class="detail_info_area_button" onclick="addOrDeleteContactRelationTable()">使某人成为或退出第三方联系人列表</button>
         </div>
         <div id="input_area">
             

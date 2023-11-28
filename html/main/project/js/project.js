@@ -211,7 +211,7 @@ function getAllOrSpecifiedProjectParticipantSubmit(){
         },
         success: function(data) {
         alertify.success('查询成功');
-        var html = '<table><tbody><tr><th>项目编号</th><th>项目名称</th><th>委托方编号</th><th>委托方名称</th></tr>';
+        var html = '<table><tbody><tr><th>项目编号</th><th>项目名称</th><th>合作方编号</th><th>合作方名称</th></tr>';
         for (var i = 0; i < data.data.length; i++){
             html += '<tr><td>' + data.data[i].project_id + '</td><td>' + data.data[i].project_name + '</td><td>' + data.data[i].project_participant_id + '</td><td>' + data.data[i].project_participant_name + '</td></tr>';
         }
@@ -224,7 +224,7 @@ function getAllOrSpecifiedProjectParticipantSubmit(){
 
 function addOrUpdateOrDeleteProjectHelperTable(){
     if (currentShow != "addOrUpdateOrDeleteProjectParticipantTable"){
-        var html = '<table><tr><th>项目编号</th><th>委托方编号</th></tr><tr><td><input class="input_area_input" id="project_id_input" type="text" placeholder="e.g. 1001"></td><td><input class="input_area_input" id="project_participant_id_input" type="text" placeholder="e.g. 1001"></td></tr></table><button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateProjectParticipantSubmit()">添加</button> <button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateOrDeleteProjectParticipantDelete()">删除</button>';
+        var html = '<table><tr><th>项目编号</th><th>合作方编号</th></tr><tr><td><input class="input_area_input" id="project_id_input" type="text" placeholder="e.g. 1001"></td><td><input class="input_area_input" id="project_participant_id_input" type="text" placeholder="e.g. 1001"></td></tr></table><button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateProjectParticipantSubmit()">添加</button> <button class="input_area_button" id="sectary_submit_button" onclick="addOrUpdateOrDeleteProjectParticipantDelete()">删除</button>';
         $('#input_area').empty();
         $('#input_area').append(html);
         currentShow = "addOrUpdateOrDeleteProjectParticipantTable"

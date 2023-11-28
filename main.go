@@ -41,6 +41,13 @@ func main() {
 
 	http.HandleFunc("/api/getAllOrSpecifiedProjectFruit", apiHandler.GetAllOrSpecifiedProjectFruit)
 	http.HandleFunc("/api/addOrUpdateOrDeleteProjectFruit", apiHandler.AddOrUpdateOrDeleteProjectFruit)
+
+	http.HandleFunc("/api/getAllOrSpecified3rdPartInfo", apiHandler.GetAllOrSpecified3rdPartInfo)
+	http.HandleFunc("/api/addOrUpdateOrDelete3rdPartInfo", apiHandler.AddOrUpdateOrDelete3rdPartInfo)
+	http.HandleFunc("/api/getAllOrSpecified3rdPartContact", apiHandler.GetAllOrSpecified3rdPartContact)
+	http.HandleFunc("/api/addOrUpdateOrDelete3rdPartContact", apiHandler.AddOrUpdateOrDelete3rdPartContact)
+	http.HandleFunc("/api/addOrDeleteContactRelation", apiHandler.AddOrDeleteContactRelation)
+
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)
 
