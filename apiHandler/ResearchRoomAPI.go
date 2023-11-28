@@ -97,3 +97,92 @@ func DeleteResearchRoom(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 	w.Write([]byte("{\"code\": 0, \"msg\": \"success\"}"))
 }
+
+func GetAllOrSpecifiedResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	name_or_id := r.URL.Query().Get("name_or_id")
+
+	res, err := dataUtil.GetAllOrSpecifiedResearchRoomWorker(name_or_id)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"get all or specified research room worker failed\"}"))
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res, []byte("}")...)...))
+}
+
+func AddOrUpdateResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	workerID := r.URL.Query().Get("worker_id")
+	roomID := r.URL.Query().Get("research_room_id")
+	direction := r.URL.Query().Get("direction")
+
+	if workerID == "" || roomID == "" || direction == "" {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"worker id or research room id or direction is empty\"}"))
+		return
+	}
+
+	workerIDI, err := strconv.Atoi(workerID)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"worker id is not a number\"}"))
+		return
+	}
+
+	roomIDI, err := strconv.Atoi(roomID)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"research room id is not a number\"}"))
+		return
+	}
+
+	err = dataUtil.AddOrUpdateResearchRoomWorker(workerIDI, roomIDI, direction)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"add or update research room worker failed\"}"))
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write([]byte("{\"code\": 0, \"msg\": \"success\"}"))
+
+}
+
+func DeleteResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	workerID := r.URL.Query().Get("worker_id")
+	roomID := r.URL.Query().Get("research_room_id")
+
+	if workerID == "" || roomID == "" {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"worker id or research room id is empty\"}"))
+		return
+	}
+
+	workerIDI, err := strconv.Atoi(workerID)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"worker id is not a number\"}"))
+		return
+	}
+
+	roomIDI, err := strconv.Atoi(roomID)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"research room id is not a number\"}"))
+		return
+	}
+
+	err = dataUtil.DeleteResearchRoomWorker(workerIDI, roomIDI)
+	if err != nil {
+		w.WriteHeader(400)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"delete research room worker failed\"}"))
+		return
+	}
+
+	w.WriteHeader(200)
+	w.Write([]byte("{\"code\": 0, \"msg\": \"success\"}"))
+}

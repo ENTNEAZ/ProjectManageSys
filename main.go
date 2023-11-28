@@ -27,8 +27,11 @@ func main() {
 	http.HandleFunc("/api/addOrUpdateSectary", apiHandler.AddOrUpdateSectary)
 	http.HandleFunc("/api/deleteSectary", apiHandler.DeleteSectary)
 
+	http.HandleFunc("/api/getAllOrSpecifiedResearchRoomWorker", apiHandler.GetAllOrSpecifiedResearchRoomWorker)
+	http.HandleFunc("/api/addOrUpdateResearchRoomWorker", apiHandler.AddOrUpdateResearchRoomWorker)
+	http.HandleFunc("/api/deleteResearchRoomWorker", apiHandler.DeleteResearchRoomWorker)
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)
 
-	http.ListenAndServe(":56785", nil)
+	http.ListenAndServe(":56789", nil)
 }

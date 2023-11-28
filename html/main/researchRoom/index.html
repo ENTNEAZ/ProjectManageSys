@@ -18,6 +18,7 @@
     <script src="./js/researchRoom.js"></script>
     <script src="./js/workingArea.js"></script>
     <script src="./js/sectary.js"></script>
+    <script src="./js/researchRoomWorker.js"></script>
     <body>
         <header>
             <!--五个按钮 分别前往 员工管理界面 研究室管理界面 科研项目管理界面 第三方信息管理界面 子课题管理界面-->
@@ -33,6 +34,10 @@
             <button class="detail_info_area_button" onclick="getAllResearchRoom()">查询所有研究室信息</button>
             <button class="detail_info_area_button" onclick="addOrUpdateResearchRoomTable()">添加或修改研究室信息</button>
             <button class="detail_info_area_button" onclick="deleteResearchRoomTable()">删除研究室信息</button>
+        </div>
+        <div class="detail_info_area">
+            <button class="detail_info_area_button" onclick="getAllOrSpecifiedResearchRoomWorkerTable()">查询研究室员工信息</button>
+            <button class="detail_info_area_button" onclick="addOrUpdateOrDeleteResearchRoomWorkerTable()">令某人成为或退出或修改某研究室的员工</button>
         </div>
         <div class="detail_info_area">
             <button class="detail_info_area_button" onclick="getAllOrSpecifiedWorkingAreaTable()">查询某研究室办公地点</button>
