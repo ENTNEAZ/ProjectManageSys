@@ -51,6 +51,9 @@ func main() {
 	http.HandleFunc("/api/findAllSubProjectInProject", apiHandler.FindAllSubProjectInProject)
 	http.HandleFunc("/api/addOrUpdateOrDeleteSpecifiedSubProject", apiHandler.AddOrUpdateOrDeleteSpecifiedSubProject)
 
+	http.HandleFunc("/api/findAllSubProjectInProjectForWorker", apiHandler.FindAllSubProjectInProjectForWorker)
+	http.HandleFunc("/api/addOrUpdateOrDeleteSpecifiedSubProjectWorker", apiHandler.AddOrUpdateOrDeleteSpecifiedSubProjectWorker)
+
 	fs := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fs)
 
