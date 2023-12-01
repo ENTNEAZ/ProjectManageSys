@@ -41,8 +41,11 @@ func AddOrUpdateResearchRoom(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 	name := r.URL.Query().Get("name")
 	direction := r.URL.Query().Get("direction")
+	work_id := r.URL.Query().Get("worker_id")
+	term := r.URL.Query().Get("term")
+	join_date := r.URL.Query().Get("join_date")
 
-	if name == "" || direction == "" {
+	if name == "" || direction == "" || work_id == "" || term == "" || join_date == "" {
 		w.WriteHeader(400)
 		w.Write([]byte("{\"code\": -1, \"msg\": \"name or direction is empty\"}"))
 		return
@@ -59,7 +62,7 @@ func AddOrUpdateResearchRoom(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err := dataUtil.AddOrUpdateResearchRoom(idi, name, direction)
+	err := dataUtil.AddOrUpdateResearchRoom(idi, name, direction, work_id, term, join_date)
 	if err != nil {
 		w.WriteHeader(400)
 		w.Write([]byte("{\"code\": -1, \"msg\": \"add or update research room failed\"}"))

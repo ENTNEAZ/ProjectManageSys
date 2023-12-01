@@ -7,7 +7,7 @@ import (
 )
 
 func GetAllResearchRoom() ([]dataStruct.ResearchRoom, error) {
-	sql := "SELECT * FROM research_room"
+	sql := "SELECT research_room_id,research_room_name,research_room_direction,worker.worker_id,worker.worker_name,term,join_date FROM research_room join worker on worker.worker_id = research_room.worker_id"
 	db := databaseAccess.DatabaseConn()
 	defer db.Close()
 
@@ -27,7 +27,11 @@ func GetAllResearchRoom() ([]dataStruct.ResearchRoom, error) {
 		var researchRoomID int
 		var researchRoomName string
 		var researchRoomDirection string
-		err := rows.Scan(&researchRoomID, &researchRoomName, &researchRoomDirection)
+		var worker_id string
+		var term string
+		var join_date string
+		var worker_name string
+		err := rows.Scan(&researchRoomID, &researchRoomName, &researchRoomDirection, &worker_id, &worker_name, &term, &join_date)
 		if err != nil {
 			return nil, err
 		}
@@ -35,16 +39,20 @@ func GetAllResearchRoom() ([]dataStruct.ResearchRoom, error) {
 			ResearchRoomID:        researchRoomID,
 			ResearchRoomName:      researchRoomName,
 			ResearchRoomDirection: researchRoomDirection,
+			Worker_id:             worker_id,
+			Term:                  term,
+			Join_date:             join_date,
+			Worker_name:           worker_name,
 		})
 
 	}
 	return ret, nil
 }
 
-func AddOrUpdateResearchRoom(id int, name string, direction string) error {
+func AddOrUpdateResearchRoom(id int, name string, direction string, work_id, term, join_date string) error {
 	if id == -1 {
 		// insert
-		sql := "INSERT INTO research_room (research_room_name, research_room_direction) VALUES (?, ?)"
+		sql := "INSERT INTO research_room (research_room_name, research_room_direction, worker_id, term, join_date) VALUES (?, ?, ?, ?, ?)"
 		db := databaseAccess.DatabaseConn()
 		defer db.Close()
 
@@ -54,7 +62,7 @@ func AddOrUpdateResearchRoom(id int, name string, direction string) error {
 		}
 		defer stmt.Close()
 
-		_, err = stmt.Exec(name, direction)
+		_, err = stmt.Exec(name, direction, work_id, term, join_date)
 		if err != nil {
 			return err
 		}
@@ -62,7 +70,7 @@ func AddOrUpdateResearchRoom(id int, name string, direction string) error {
 		return nil
 	} else {
 		// update
-		sql := "UPDATE research_room SET research_room_name = ?, research_room_direction = ? WHERE research_room_id = ?"
+		sql := "UPDATE research_room SET research_room_name = ?, research_room_direction = ? , worker_id = ? , term = ? , join_date = ? WHERE research_room_id = ?"
 		db := databaseAccess.DatabaseConn()
 		defer db.Close()
 
@@ -72,7 +80,7 @@ func AddOrUpdateResearchRoom(id int, name string, direction string) error {
 		}
 		defer stmt.Close()
 
-		_, err = stmt.Exec(name, direction, id)
+		_, err = stmt.Exec(name, direction, work_id, term, join_date, id)
 		if err != nil {
 			return err
 		}
@@ -101,9 +109,9 @@ func DeleteResearchRoom(id int) error {
 }
 
 func GetAllOrSpecifiedResearchRoomWorker(name_or_id string) ([]byte, error) {
-	sql := "select worker_id,worker_name,research_room_name,direction from worker natural join research_room_worker natural join research_room where research_room.research_room_id = ? or research_room.research_room_name LIKE ?"
+	sql := "select worker.worker_id,worker_name,research_room_name,direction from worker join research_room_worker on worker.worker_id = research_room_worker.worker_id join research_room on research_room_worker.research_room_id = research_room.research_room_id where research_room.research_room_id = ? or research_room.research_room_name LIKE ?"
 	if name_or_id == "" {
-		sql = "select worker_id,worker_name,research_room_name,direction from worker natural join research_room_worker natural join research_room where 1 = 1 or ? = ?"
+		sql = "select worker.worker_id,worker_name,research_room_name,direction from worker join research_room_worker on worker.worker_id = research_room_worker.worker_id join research_room on research_room_worker.research_room_id = research_room.research_room_id where 1 = 1 or ? = ?"
 	}
 	db := databaseAccess.DatabaseConn()
 

@@ -1,6 +1,6 @@
 function getAllOrSpecifiedWorkingAreaTable() {
     if (currentShow != "getAllOrSpecifiedWorkingAreaTable"){
-        var html = '<table><tbody><tr><th>办公室名称或办公室编号</th></tr><tr><td><input class="input_area_input" id="research_room_id_input" type="text" placeholder="留空则查询所有工作地点"></td></tr></tbody></table>';
+        var html = '<table><tbody><tr><th>研究室名称或研究室编号</th></tr><tr><td><input class="input_area_input" id="research_room_id_input" type="text" placeholder="留空则查询所有工作地点"></td></tr></tbody></table>';
         html += '<button class="input_area_button" id="research_room_submit_button" onclick="getAllOrSpecifiedWorkingAreaSubmit()">查询</button>';
         $('#input_area').empty();
         $('#input_area').append(html);

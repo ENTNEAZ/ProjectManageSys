@@ -6,7 +6,7 @@ import (
 )
 
 func GetAllSectary() ([]dataStruct.Sectary, error) {
-	sql := "SELECT worker_id,worker_name,job_detail,research_room_name FROM research_room NATURAL JOIN research_room_sectary NATURAL JOIN worker"
+	sql := "SELECT worker.worker_id,worker_name,job_detail,research_room_name FROM research_room join research_room_sectary on research_room.research_room_id = research_room_sectary.research_room_id join worker on research_room_sectary.worker_id = worker.worker_id"
 	db := databaseAccess.DatabaseConn()
 
 	stmt, err := db.Prepare(sql)
@@ -78,7 +78,8 @@ func GetSectaryByResearchRoomName(name string) ([]dataStruct.Sectary, error) {
 }
 
 func GetSectaryByResearchRoomID(id int) ([]dataStruct.Sectary, error) {
-	sql := "SELECT worker_id,worker_name,job_detail,research_room_name FROM research_room NATURAL JOIN research_room_sectary NATURAL JOIN worker WHERE research_room_id = ?"
+	sql := "SELECT worker.worker_id,worker_name,job_detail,research_room_name FROM research_room join research_room_sectary on research_room.research_room_id = research_room_sectary.research_room_id join worker on research_room_sectary.worker_id = worker.worker_id WHERE research_room_sectary.research_room_id = ?"
+
 	db := databaseAccess.DatabaseConn()
 
 	stmt, err := db.Prepare(sql)
