@@ -7,6 +7,7 @@ import (
 )
 
 func GetAllResearchRoom(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	researchRoom, err := dataUtil.GetAllResearchRoom()
 	if err != nil {
 		w.WriteHeader(400)
@@ -14,25 +15,8 @@ func GetAllResearchRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var ret = []byte("[")
-
-	for i := 0; i < len(researchRoom); i++ {
-		j, err := researchRoom[i].ToJson()
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"research room to json failed\"}"))
-			return
-		}
-		ret = append(ret, append(j, []byte(",")...)...)
-	}
-	if len(researchRoom) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, []byte("]")...)
-
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(ret, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(researchRoom, []byte("}")...)...))
 
 }
 

@@ -1,12 +1,11 @@
 package dataUtil
 
 import (
-	"Database_Homework/dataStruct"
 	"Database_Homework/databaseAccess"
 	"strconv"
 )
 
-func GetAllResearchRoom() ([]dataStruct.ResearchRoom, error) {
+func GetAllResearchRoom() ([]byte, error) {
 	sql := "SELECT research_room_id,research_room_name,research_room_direction,worker.worker_id,worker.worker_name,term,join_date FROM research_room join worker on worker.worker_id = research_room.worker_id"
 	db := databaseAccess.DatabaseConn()
 	defer db.Close()
@@ -22,7 +21,8 @@ func GetAllResearchRoom() ([]dataStruct.ResearchRoom, error) {
 		return nil, err
 	}
 
-	var ret []dataStruct.ResearchRoom
+	var ret []byte
+	ret = append(ret, []byte("[")...)
 	for rows.Next() {
 		var researchRoomID int
 		var researchRoomName string
@@ -35,17 +35,27 @@ func GetAllResearchRoom() ([]dataStruct.ResearchRoom, error) {
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, dataStruct.ResearchRoom{
-			ResearchRoomID:        researchRoomID,
-			ResearchRoomName:      researchRoomName,
-			ResearchRoomDirection: researchRoomDirection,
-			Worker_id:             worker_id,
-			Term:                  term,
-			Join_date:             join_date,
-			Worker_name:           worker_name,
-		})
-
+		ret = append(ret, []byte("{\"ResearchRoomID\": ")...)
+		ret = append(ret, []byte(strconv.Itoa(researchRoomID))...)
+		ret = append(ret, []byte(", \"ResearchRoomName\": \"")...)
+		ret = append(ret, []byte(researchRoomName)...)
+		ret = append(ret, []byte("\", \"ResearchRoomDirection\": \"")...)
+		ret = append(ret, []byte(researchRoomDirection)...)
+		ret = append(ret, []byte("\", \"Worker_id\": \"")...)
+		ret = append(ret, []byte(worker_id)...)
+		ret = append(ret, []byte("\", \"Worker_name\": \"")...)
+		ret = append(ret, []byte(worker_name)...)
+		ret = append(ret, []byte("\", \"Term\": \"")...)
+		ret = append(ret, []byte(term)...)
+		ret = append(ret, []byte("\", \"Join_date\": \"")...)
+		ret = append(ret, []byte(join_date)...)
+		ret = append(ret, []byte("\"},")...)
 	}
+	if len(ret) > 1 {
+		ret = ret[:len(ret)-1]
+	}
+	ret = append(ret, []byte("]")...)
+
 	return ret, nil
 }
 
