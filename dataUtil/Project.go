@@ -62,7 +62,7 @@ func GetAllOrSpecifiedProject(idname string) ([]byte, error) {
 }
 
 func AddOrUpdateProject(id, name, detail, start_time, end_time, fund, worker_id, participant_id, project_supervisor_id string) error {
-	sql := "INSERT INTO project (project_name,project_detail,project_start_time,project_end_time,project_fund,worker_id,project_supervisor_id) VALUES (?,?,?,?,?,?,?)"
+	sql := "INSERT INTO project (project_name,project_detail,project_start_time,project_end_time,project_fund,worker_id,project_supervisor_id,project_participant_id) VALUES (?,?,?,?,?,?,?,?)"
 	if id != "" {
 		sql = "UPDATE project SET project_name = ?,project_detail = ?,project_start_time = ?,project_end_time = ?,project_fund = ?,worker_id = ?,project_supervisor_id = ?,project_participant_id =? WHERE project_id = ?"
 	}
@@ -74,10 +74,8 @@ func AddOrUpdateProject(id, name, detail, start_time, end_time, fund, worker_id,
 	}
 	defer stmt.Close()
 
-	idi, err := strconv.Atoi(id)
-	if err != nil {
-		return err
-	}
+	idi, _ := strconv.Atoi(id)
+
 	idwi, err := strconv.Atoi(worker_id)
 	if err != nil {
 		return err
@@ -94,7 +92,7 @@ func AddOrUpdateProject(id, name, detail, start_time, end_time, fund, worker_id,
 	if id != "" {
 		_, err = stmt.Exec(name, detail, start_time, end_time, fund, idwi, idpsi, idpi, idi)
 	} else {
-		_, err = stmt.Exec(name, detail, start_time, end_time, fund, idwi, idpsi)
+		_, err = stmt.Exec(name, detail, start_time, end_time, fund, idwi, idpsi, idpi)
 	}
 
 	if err != nil {
