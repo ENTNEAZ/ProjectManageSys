@@ -1,11 +1,11 @@
 package dataUtil
 
 import (
-	"Database_Homework/dataStruct"
 	"Database_Homework/databaseAccess"
+	"Database_Homework/jsonHelper"
 )
 
-func GetAllSectary() ([]dataStruct.Sectary, error) {
+func GetAllSectary() (*jsonHelper.JsonStr, error) {
 	sql := "SELECT worker.worker_id,worker_name,job_detail,research_room_name FROM research_room join research_room_sectary on research_room.research_room_id = research_room_sectary.research_room_id join worker on research_room_sectary.worker_id = worker.worker_id"
 	db := databaseAccess.DatabaseConn()
 
@@ -21,7 +21,9 @@ func GetAllSectary() ([]dataStruct.Sectary, error) {
 		return nil, err
 	}
 
-	var ret []dataStruct.Sectary
+	ret := new(jsonHelper.JsonStr)
+	ret.JsonArrayInit()
+
 	for rows.Next() {
 		var workerID int
 		var workerName string
@@ -31,18 +33,22 @@ func GetAllSectary() ([]dataStruct.Sectary, error) {
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, dataStruct.Sectary{
-			WorkerID:         workerID,
-			WorkerName:       workerName,
-			JobDetail:        jobDetail,
-			ResearchRoomName: researchRoomName,
-		})
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrInt("WorkerID", workerID)
+		temp.JsonDictAddStrStr("WorkerName", workerName)
+		temp.JsonDictAddStrStr("JobDetail", jobDetail)
+		temp.JsonDictAddStrStr("ResearchRoomName", researchRoomName)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
+
+	ret.JsonArrayEnd()
 	return ret, nil
 }
 
-func GetSectaryByResearchRoomName(name string) ([]dataStruct.Sectary, error) {
-	sql := "SELECT worker_id,worker_name,job_detail,research_room_name FROM research_room NATURAL JOIN research_room_sectary NATURAL JOIN worker WHERE research_room_name LIKE ?"
+func GetSectaryByResearchRoomName(name string) (*jsonHelper.JsonStr, error) {
+	sql := "SELECT worker.worker_id,worker_name,job_detail,research_room_name FROM research_room JOIN research_room_sectary ON research_room.research_room_id = research_room_sectary.research_room_id JOIN worker ON research_room_sectary.worker_id = worker.worker_id WHERE research_room_name LIKE ?"
 	db := databaseAccess.DatabaseConn()
 
 	stmt, err := db.Prepare(sql)
@@ -57,7 +63,9 @@ func GetSectaryByResearchRoomName(name string) ([]dataStruct.Sectary, error) {
 		return nil, err
 	}
 
-	var ret []dataStruct.Sectary
+	ret := new(jsonHelper.JsonStr)
+	ret.JsonArrayInit()
+
 	for rows.Next() {
 		var workerID int
 		var workerName string
@@ -67,17 +75,20 @@ func GetSectaryByResearchRoomName(name string) ([]dataStruct.Sectary, error) {
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, dataStruct.Sectary{
-			WorkerID:         workerID,
-			WorkerName:       workerName,
-			JobDetail:        jobDetail,
-			ResearchRoomName: researchRoomName,
-		})
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrInt("WorkerID", workerID)
+		temp.JsonDictAddStrStr("WorkerName", workerName)
+		temp.JsonDictAddStrStr("JobDetail", jobDetail)
+		temp.JsonDictAddStrStr("ResearchRoomName", researchRoomName)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
+	ret.JsonArrayEnd()
 	return ret, nil
 }
 
-func GetSectaryByResearchRoomID(id int) ([]dataStruct.Sectary, error) {
+func GetSectaryByResearchRoomID(id int) (*jsonHelper.JsonStr, error) {
 	sql := "SELECT worker.worker_id,worker_name,job_detail,research_room_name FROM research_room join research_room_sectary on research_room.research_room_id = research_room_sectary.research_room_id join worker on research_room_sectary.worker_id = worker.worker_id WHERE research_room_sectary.research_room_id = ?"
 
 	db := databaseAccess.DatabaseConn()
@@ -94,7 +105,9 @@ func GetSectaryByResearchRoomID(id int) ([]dataStruct.Sectary, error) {
 		return nil, err
 	}
 
-	var ret []dataStruct.Sectary
+	ret := new(jsonHelper.JsonStr)
+	ret.JsonArrayInit()
+
 	for rows.Next() {
 		var workerID int
 		var workerName string
@@ -104,13 +117,17 @@ func GetSectaryByResearchRoomID(id int) ([]dataStruct.Sectary, error) {
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, dataStruct.Sectary{
-			WorkerID:         workerID,
-			WorkerName:       workerName,
-			JobDetail:        jobDetail,
-			ResearchRoomName: researchRoomName,
-		})
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrInt("WorkerID", workerID)
+		temp.JsonDictAddStrStr("WorkerName", workerName)
+		temp.JsonDictAddStrStr("JobDetail", jobDetail)
+		temp.JsonDictAddStrStr("ResearchRoomName", researchRoomName)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
+
+	ret.JsonArrayEnd()
 	return ret, nil
 }
 
