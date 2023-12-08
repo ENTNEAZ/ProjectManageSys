@@ -1,12 +1,12 @@
 package dataUtil
 
 import (
-	"Database_Homework/dataStruct"
 	"Database_Homework/databaseAccess"
+	"Database_Homework/jsonHelper"
 	sql2 "database/sql"
 )
 
-func GetWorkingAreaByResearchRoomName(name string) ([]dataStruct.WorkingArea, error) {
+func GetWorkingAreaByResearchRoomName(name string) (*jsonHelper.JsonStr, error) {
 	sql := "SELECT working_area.working_area_id , research_room_name ,working_area_size , working_area_address FROM (working_area LEFT JOIN research_room_working_area ON working_area.working_area_id = research_room_working_area.working_area_id) LEFT JOIN research_room ON research_room.research_room_id = research_room_working_area.research_room_id WHERE research_room_name LIKE ?"
 	db := databaseAccess.DatabaseConn()
 	defer db.Close()
@@ -26,7 +26,9 @@ func GetWorkingAreaByResearchRoomName(name string) ([]dataStruct.WorkingArea, er
 		return nil, err
 	}
 
-	var ret []dataStruct.WorkingArea
+	ret := new(jsonHelper.JsonStr)
+	ret.JsonArrayInit()
+
 	for rows.Next() {
 		var workingAreaID int
 		var researchRoomName sql2.NullString
@@ -36,26 +38,27 @@ func GetWorkingAreaByResearchRoomName(name string) ([]dataStruct.WorkingArea, er
 		if err != nil {
 			return nil, err
 		}
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
 		if researchRoomName.Valid {
-			ret = append(ret, dataStruct.WorkingArea{
-				WorkingAreaID:      workingAreaID,
-				ResearchRoomName:   researchRoomName.String,
-				WorkingAreaSize:    workingAreaSize,
-				WorkingAreaAddress: workingAreaAddress,
-			})
+			temp.JsonDictAddStrInt("WorkingAreaID", workingAreaID)
+			temp.JsonDictAddStrStr("ResearchRoomName", researchRoomName.String)
+			temp.JsonDictAddStrInt("WorkingAreaSize", workingAreaSize)
+			temp.JsonDictAddStrStr("WorkingAreaAddress", workingAreaAddress)
 		} else {
-			ret = append(ret, dataStruct.WorkingArea{
-				WorkingAreaID:      workingAreaID,
-				ResearchRoomName:   "暂无",
-				WorkingAreaSize:    workingAreaSize,
-				WorkingAreaAddress: workingAreaAddress,
-			})
+			temp.JsonDictAddStrInt("WorkingAreaID", workingAreaID)
+			temp.JsonDictAddStrStr("ResearchRoomName", "暂无")
+			temp.JsonDictAddStrInt("WorkingAreaSize", workingAreaSize)
+			temp.JsonDictAddStrStr("WorkingAreaAddress", workingAreaAddress)
 		}
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
+	ret.JsonArrayEnd()
 	return ret, nil
 }
 
-func GetWorkingAreaByResearchRoomID(id int) ([]dataStruct.WorkingArea, error) {
+func GetWorkingAreaByResearchRoomID(id int) (*jsonHelper.JsonStr, error) {
 	sql := "SELECT working_area.working_area_id, research_room_name ,working_area_size , working_area_address FROM (working_area LEFT JOIN research_room_working_area ON working_area.working_area_id = research_room_working_area.working_area_id) LEFT JOIN research_room ON research_room.research_room_id = research_room_working_area.research_room_id WHERE research_room_working_area.research_room_id = ?"
 	db := databaseAccess.DatabaseConn()
 	defer db.Close()
@@ -74,7 +77,9 @@ func GetWorkingAreaByResearchRoomID(id int) ([]dataStruct.WorkingArea, error) {
 		return nil, err
 	}
 
-	var ret []dataStruct.WorkingArea
+	ret := new(jsonHelper.JsonStr)
+	ret.JsonArrayInit()
+
 	for rows.Next() {
 		var workingAreaID int
 		var researchRoomName sql2.NullString
@@ -84,26 +89,28 @@ func GetWorkingAreaByResearchRoomID(id int) ([]dataStruct.WorkingArea, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
 		if researchRoomName.Valid {
-			ret = append(ret, dataStruct.WorkingArea{
-				WorkingAreaID:      workingAreaID,
-				ResearchRoomName:   researchRoomName.String,
-				WorkingAreaSize:    workingAreaSize,
-				WorkingAreaAddress: workingAreaAddress,
-			})
+			temp.JsonDictAddStrInt("WorkingAreaID", workingAreaID)
+			temp.JsonDictAddStrStr("ResearchRoomName", researchRoomName.String)
+			temp.JsonDictAddStrInt("WorkingAreaSize", workingAreaSize)
+			temp.JsonDictAddStrStr("WorkingAreaAddress", workingAreaAddress)
 		} else {
-			ret = append(ret, dataStruct.WorkingArea{
-				WorkingAreaID:      workingAreaID,
-				ResearchRoomName:   "暂无",
-				WorkingAreaSize:    workingAreaSize,
-				WorkingAreaAddress: workingAreaAddress,
-			})
+			temp.JsonDictAddStrInt("WorkingAreaID", workingAreaID)
+			temp.JsonDictAddStrStr("ResearchRoomName", "暂无")
+			temp.JsonDictAddStrInt("WorkingAreaSize", workingAreaSize)
+			temp.JsonDictAddStrStr("WorkingAreaAddress", workingAreaAddress)
 		}
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
+	ret.JsonArrayEnd()
 	return ret, nil
 }
 
-func GetAllWorkingArea() ([]dataStruct.WorkingArea, error) {
+func GetAllWorkingArea() (*jsonHelper.JsonStr, error) {
 	sql := "SELECT working_area.working_area_id  ,research_room_name ,working_area_size , working_area_address FROM (working_area LEFT JOIN research_room_working_area ON working_area.working_area_id = research_room_working_area.working_area_id) LEFT JOIN research_room ON research_room.research_room_id = research_room_working_area.research_room_id"
 	db := databaseAccess.DatabaseConn()
 	defer db.Close()
@@ -122,7 +129,9 @@ func GetAllWorkingArea() ([]dataStruct.WorkingArea, error) {
 		return nil, err
 	}
 
-	var ret []dataStruct.WorkingArea
+	ret := new(jsonHelper.JsonStr)
+	ret.JsonArrayInit()
+
 	for rows.Next() {
 		var workingAreaID int
 		var researchRoomName sql2.NullString
@@ -132,22 +141,23 @@ func GetAllWorkingArea() ([]dataStruct.WorkingArea, error) {
 		if err != nil {
 			return nil, err
 		}
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
 		if researchRoomName.Valid {
-			ret = append(ret, dataStruct.WorkingArea{
-				WorkingAreaID:      workingAreaID,
-				ResearchRoomName:   researchRoomName.String,
-				WorkingAreaSize:    workingAreaSize,
-				WorkingAreaAddress: workingAreaAddress,
-			})
+			temp.JsonDictAddStrInt("WorkingAreaID", workingAreaID)
+			temp.JsonDictAddStrStr("ResearchRoomName", researchRoomName.String)
+			temp.JsonDictAddStrInt("WorkingAreaSize", workingAreaSize)
+			temp.JsonDictAddStrStr("WorkingAreaAddress", workingAreaAddress)
 		} else {
-			ret = append(ret, dataStruct.WorkingArea{
-				WorkingAreaID:      workingAreaID,
-				ResearchRoomName:   "暂无",
-				WorkingAreaSize:    workingAreaSize,
-				WorkingAreaAddress: workingAreaAddress,
-			})
+			temp.JsonDictAddStrInt("WorkingAreaID", workingAreaID)
+			temp.JsonDictAddStrStr("ResearchRoomName", "暂无")
+			temp.JsonDictAddStrInt("WorkingAreaSize", workingAreaSize)
+			temp.JsonDictAddStrStr("WorkingAreaAddress", workingAreaAddress)
 		}
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
+	ret.JsonArrayEnd()
 	return ret, nil
 }
 
