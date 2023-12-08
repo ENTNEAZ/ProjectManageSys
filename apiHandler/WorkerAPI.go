@@ -1,7 +1,6 @@
 package apiHandler
 
 import (
-	"Database_Homework/dataStruct"
 	"Database_Homework/dataUtil"
 	"net/http"
 	"strconv"
@@ -23,15 +22,9 @@ func GetWorkerByID(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{\"code\": -1, \"msg\": \"get worker by id failed\"}"))
 		return
 	}
-	j, err := worker.ToJson()
-	if err != nil {
-		w.WriteHeader(400)
 
-		w.Write([]byte("{\"code\": -1, \"msg\": \"worker to json failed\"}"))
-		return
-	}
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(j, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(worker.Str, []byte("}")...)...))
 
 }
 
@@ -43,25 +36,9 @@ func GetAllWorker(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{\"code\": -1, \"msg\": \"get all worker failed\"}"))
 		return
 	}
-	ret := []byte("[")
-	for i := 0; i < len(workers); i++ {
-		j, err := workers[i].ToJson()
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"worker to json failed\"}"))
-			return
-		}
-		ret = append(ret, append(j, []byte(",")...)...)
-	}
-	if len(workers) > 1 {
-		// remove last comma
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, []byte("]")...)
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(ret, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(workers.Str, []byte("}")...)...))
 
 }
 
@@ -93,16 +70,7 @@ func AddOrUpdateWorker(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	worker := dataStruct.Worker{
-		WorkerId:       idi,
-		WorkerName:     name,
-		WorkerGender:   gender,
-		WorkerBirth:    birth,
-		WorkerJoinTime: joinTime,
-		WorkerJob:      job,
-	}
-
-	err := dataUtil.AddOrUpdateWorker(worker)
+	err := dataUtil.AddOrUpdateWorker(idi, name, gender, birth, joinTime, job)
 
 	if err != nil {
 		w.WriteHeader(400)
