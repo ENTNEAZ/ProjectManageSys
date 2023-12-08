@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func GetAllOrSpecifiedProject(idname string) ([]byte, error) {
+func GetAllOrSpecifiedProject(idname string) (*jsonHelper.JsonStr, error) {
 	sql := "select project_id,project_name,project_detail,project_start_time,project_end_time,project_fund,worker_name,A.project_participant_id,A.project_participant_name,T.project_participant_id,T.project_participant_name from (project natural join worker natural join project_participant AS A natural join project_participant_worker)  JOIN project_participant AS T ON project.project_supervisor_id = T.project_participant_id where project_id = ? or project_name like ?"
 	if idname == "" {
 		sql = "select project_id,project_name,project_detail,project_start_time,project_end_time,project_fund,worker_name,A.project_participant_id,A.project_participant_name,T.project_participant_id,T.project_participant_name from (project natural join worker natural join project_participant AS A natural join project_participant_worker)  JOIN project_participant AS T ON project.project_supervisor_id = T.project_participant_id where 1 = 1 or project_id = ? or project_name like ?"
@@ -23,7 +23,7 @@ func GetAllOrSpecifiedProject(idname string) ([]byte, error) {
 	}
 	defer rows.Close()
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 	for rows.Next() {
 		var project_id, project_name, project_detail, project_start_time, project_end_time, project_fund, worker_name, project_participant_id, project_participant_name, project_supervisor_id, project_supervisor_name string
@@ -49,7 +49,7 @@ func GetAllOrSpecifiedProject(idname string) ([]byte, error) {
 	}
 	ret.JsonArrayEnd()
 
-	return ret.Str, nil
+	return ret, nil
 }
 
 func AddOrUpdateProject(id, name, detail, start_time, end_time, fund, worker_id, participant_id, project_supervisor_id string) error {
@@ -113,7 +113,7 @@ func DeleteProject(id string) error {
 	return nil
 }
 
-func FindAllWorkerInProject(idname string) ([]byte, error) {
+func FindAllWorkerInProject(idname string) (*jsonHelper.JsonStr, error) {
 	sql := "select project.project_id,project_name,worker.worker_id,worker.worker_name from ((project join project_worker on project.project_id = project_worker.project_id) join worker on project_worker.worker_id = worker.worker_id) where project.project_id = ? or project_name like ?"
 	if idname == "" {
 		sql = "select project.project_id,project_name,worker.worker_id,worker.worker_name from ((project join project_worker on project.project_id = project_worker.project_id) join worker on project_worker.worker_id = worker.worker_id) where 1 = 1 or project.project_id = ? or project_name like ?"
@@ -133,7 +133,7 @@ func FindAllWorkerInProject(idname string) ([]byte, error) {
 
 	defer rows.Close()
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 	for rows.Next() {
 		var project_id, project_name, worker_id, worker_name string
@@ -152,7 +152,7 @@ func FindAllWorkerInProject(idname string) ([]byte, error) {
 	}
 
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 
 }
 
@@ -206,7 +206,7 @@ func DeleteProjectWorker(project_id, worker_id string) error {
 	return nil
 }
 
-func FindAllParticipantInProject(projectidname string) ([]byte, error) {
+func FindAllParticipantInProject(projectidname string) (*jsonHelper.JsonStr, error) {
 	sql := "select project.project_id,project_name,project_participant.project_participant_id,project_participant_name from (project join project_project_participant on project.project_id = project_project_participant.project_id) join project_participant on project_project_participant.project_participant_id = project_participant.project_participant_id where project.project_id = ? or project_name like ?"
 	if projectidname == "" {
 		sql = "select project.project_id,project_name,project_participant.project_participant_id,project_participant_name from (project join project_project_participant on project.project_id = project_project_participant.project_id) join project_participant on project_project_participant.project_participant_id = project_participant.project_participant_id where 1 = 1 or project.project_id = ? or project_name like ?"
@@ -226,7 +226,7 @@ func FindAllParticipantInProject(projectidname string) ([]byte, error) {
 
 	defer rows.Close()
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 	for rows.Next() {
 		var project_id, project_name, project_participant_id, project_participant_name string
@@ -244,7 +244,7 @@ func FindAllParticipantInProject(projectidname string) ([]byte, error) {
 		ret.JsonArrayAddJson(temp)
 	}
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 }
 
 func AddProjectParticipant(project_id, project_participant_id string) error {
@@ -297,7 +297,7 @@ func DeleteProjectParticipant(project_id, project_participant_id string) error {
 	return nil
 }
 
-func GetAllOrSpecifiedProjectFruit(idname string) ([]byte, error) {
+func GetAllOrSpecifiedProjectFruit(idname string) (*jsonHelper.JsonStr, error) {
 	sql := "select project.project_id,project_name,project.worker_id,worker.worker_name,project_fruit_id,project_fruit_get_time,project_fruit_master_rank,project_fruit_type,project_fruit_detail from project join project_project_fruit on project.project_id = project_project_fruit.project_id join worker on project.worker_id = worker.worker_id  where project.project_id = ? or project_name like ?"
 	if idname == "" {
 		sql = "select project.project_id,project_name,project.worker_id,worker.worker_name,project_fruit_id,project_fruit_get_time,project_fruit_master_rank,project_fruit_type,project_fruit_detail from project join project_project_fruit on project.project_id = project_project_fruit.project_id join worker on project.worker_id = worker.worker_id  where 1 = 1 or project.project_id = ? or project_name like ?"
@@ -316,7 +316,7 @@ func GetAllOrSpecifiedProjectFruit(idname string) ([]byte, error) {
 
 	defer rows.Close()
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 	for rows.Next() {
 		var project_id, project_name, worker_id, worker_name, project_fruit_id, project_fruit_get_time, project_fruit_master_rank, project_fruit_type, project_fruit_detail string
@@ -340,7 +340,7 @@ func GetAllOrSpecifiedProjectFruit(idname string) ([]byte, error) {
 	}
 
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 
 }
 

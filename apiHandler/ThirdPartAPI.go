@@ -16,7 +16,7 @@ func GetAllOrSpecified3rdPartInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res.Str, []byte("}")...)...))
 }
 
 func AddOrUpdateOrDelete3rdPartInfo(w http.ResponseWriter, r *http.Request) {
@@ -76,7 +76,7 @@ func GetAllOrSpecified3rdPartContact(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res.Str, []byte("}")...)...))
 }
 
 func AddOrUpdateOrDelete3rdPartContact(w http.ResponseWriter, r *http.Request) {

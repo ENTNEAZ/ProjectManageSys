@@ -16,7 +16,7 @@ func GetAllOrSpecifiedProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res.Str, []byte("}")...)...))
 }
 
 func AddOrUpdateOrDeleteProject(w http.ResponseWriter, r *http.Request) {
@@ -83,7 +83,7 @@ func FindAllWorkerInProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res.Str, []byte("}")...)...))
 }
 
 func AddOrDeleteProjectWorker(w http.ResponseWriter, r *http.Request) {
@@ -146,7 +146,7 @@ func FindAllParticipantInProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res.Str, []byte("}")...)...))
 }
 
 func AddOrDeleteProjectParticipant(w http.ResponseWriter, r *http.Request) {
@@ -209,7 +209,7 @@ func GetAllOrSpecifiedProjectFruit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res.Str, []byte("}")...)...))
 }
 
 func AddOrUpdateOrDeleteProjectFruit(w http.ResponseWriter, r *http.Request) {

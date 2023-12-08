@@ -16,7 +16,7 @@ func GetAllResearchRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(researchRoom, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(researchRoom.Str, []byte("}")...)...))
 
 }
 
@@ -97,7 +97,7 @@ func GetAllOrSpecifiedResearchRoomWorker(w http.ResponseWriter, r *http.Request)
 	}
 
 	w.WriteHeader(200)
-	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res, []byte("}")...)...))
+	w.Write(append([]byte("{\"code\": 0, \"msg\": \"success\", \"data\": "), append(res.Str, []byte("}")...)...))
 }
 
 func AddOrUpdateResearchRoomWorker(w http.ResponseWriter, r *http.Request) {

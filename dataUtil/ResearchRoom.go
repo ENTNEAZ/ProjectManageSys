@@ -5,7 +5,7 @@ import (
 	"Database_Homework/jsonHelper"
 )
 
-func GetAllResearchRoom() ([]byte, error) {
+func GetAllResearchRoom() (*jsonHelper.JsonStr, error) {
 	sql := "SELECT research_room_id,research_room_name,research_room_direction,worker.worker_id,worker.worker_name,term,join_date FROM research_room join worker on worker.worker_id = research_room.worker_id"
 	db := databaseAccess.DatabaseConn()
 	defer db.Close()
@@ -21,7 +21,7 @@ func GetAllResearchRoom() ([]byte, error) {
 		return nil, err
 	}
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 	for rows.Next() {
 		var researchRoomID int
@@ -48,7 +48,7 @@ func GetAllResearchRoom() ([]byte, error) {
 		ret.JsonArrayAddJson(temp)
 	}
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 }
 
 func AddOrUpdateResearchRoom(id int, name string, direction string, work_id, term, join_date string) error {
@@ -110,7 +110,7 @@ func DeleteResearchRoom(id int) error {
 	return nil
 }
 
-func GetAllOrSpecifiedResearchRoomWorker(name_or_id string) ([]byte, error) {
+func GetAllOrSpecifiedResearchRoomWorker(name_or_id string) (*jsonHelper.JsonStr, error) {
 	sql := "select worker.worker_id,worker_name,research_room_name,direction from worker join research_room_worker on worker.worker_id = research_room_worker.worker_id join research_room on research_room_worker.research_room_id = research_room.research_room_id where research_room.research_room_id = ? or research_room.research_room_name LIKE ?"
 	if name_or_id == "" {
 		sql = "select worker.worker_id,worker_name,research_room_name,direction from worker join research_room_worker on worker.worker_id = research_room_worker.worker_id join research_room on research_room_worker.research_room_id = research_room.research_room_id where 1 = 1 or ? = ?"
@@ -128,7 +128,7 @@ func GetAllOrSpecifiedResearchRoomWorker(name_or_id string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 	for rows.Next() {
 		var workerID int
@@ -150,7 +150,7 @@ func GetAllOrSpecifiedResearchRoomWorker(name_or_id string) ([]byte, error) {
 		ret.JsonArrayAddJson(temp)
 	}
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 }
 
 func AddOrUpdateResearchRoomWorker(worker_id int, research_room_id int, direction string) error {

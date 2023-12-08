@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func FindAllSubProjectInProject(idname string) ([]byte, error) {
+func FindAllSubProjectInProject(idname string) (*jsonHelper.JsonStr, error) {
 	sql := "select project.project_id,project.project_name,sub_project_id,sub_project.worker_id,worker_name,sub_project_end_time,sub_project_fund,sub_project_tech_detail from sub_project join project on sub_project.project_id = project.project_id join worker on sub_project.worker_id = worker.worker_id"
 	if idname != "" {
 		sql += " where project.project_id = ? or project.project_name like ?"
@@ -31,7 +31,7 @@ func FindAllSubProjectInProject(idname string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 
 	for rows.Next() {
@@ -63,7 +63,7 @@ func FindAllSubProjectInProject(idname string) ([]byte, error) {
 	}
 
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 
 }
 
@@ -118,7 +118,7 @@ func DeleteSubProject(subProjectID string) error {
 	return nil
 }
 
-func FindAllSubProjectInProjectForWorker(idname string) ([]byte, error) {
+func FindAllSubProjectInProjectForWorker(idname string) (*jsonHelper.JsonStr, error) {
 	sql := "select sub_project_worker.sub_project_id,sub_project_tech_detail,sub_project_worker.worker_id,worker_name,join_time,sub_project_worker_fund,workload from sub_project_worker join sub_project on sub_project_worker.sub_project_id = sub_project.sub_project_id join worker on sub_project_worker.worker_id = worker.worker_id"
 	if idname != "" {
 		sql += " where sub_project_worker.sub_project_id = ? or worker_name like ?"
@@ -144,7 +144,7 @@ func FindAllSubProjectInProjectForWorker(idname string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 
 	for rows.Next() {
@@ -175,7 +175,7 @@ func FindAllSubProjectInProjectForWorker(idname string) ([]byte, error) {
 	}
 
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 }
 
 func AddOrUpdateSubProjectWorker(subProjectID string, workerID string, joinTime string, subProjectWorkerFund string, workload string) error {

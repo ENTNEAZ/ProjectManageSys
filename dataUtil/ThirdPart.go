@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func GetAllOrSpecified3rdPartInfo(project_idname string) ([]byte, error) {
+func GetAllOrSpecified3rdPartInfo(project_idname string) (*jsonHelper.JsonStr, error) {
 	sql := "SELECT project_participant_id,project_participant_name,project_participant_address,project_participant.project_participant_worker_id,project_participant_worker_telephone,project_participant_worker_mobile,project_participant_worker_email from project_participant join project_participant_worker on  project_participant.project_participant_worker_id = project_participant_worker.project_participant_worker_id"
 	if project_idname == "" {
 		sql += " where 1 = 1 or project_participant_id = ? or project_participant_name like ?"
@@ -33,7 +33,7 @@ func GetAllOrSpecified3rdPartInfo(project_idname string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 
 	for rows.Next() {
@@ -64,7 +64,7 @@ func GetAllOrSpecified3rdPartInfo(project_idname string) ([]byte, error) {
 	}
 
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 }
 
 func AddOrUpdate3rdPartInfo(project_participant_id string, project_participant_name string, project_participant_address string, project_participant_worker_id string) error {
@@ -121,7 +121,7 @@ func Delete3rdPartInfo(project_participant_id string) error {
 	return nil
 }
 
-func GetAllOrSpecified3rdPartContact(idname string) ([]byte, error) {
+func GetAllOrSpecified3rdPartContact(idname string) (*jsonHelper.JsonStr, error) {
 	sql := "select project_participant_worker.project_participant_worker_id,project_participant_worker_telephone,project_participant_worker_mobile,project_participant_worker_email,project_participant.project_participant_id,project_participant.project_participant_name,T.project_participant_id,T.project_participant_name\n    from project_participant_worker\n    left join project_participant_project_participant_worker_contact on project_participant_worker.project_participant_worker_id = project_participant_project_participant_worker_contact.project_participant_worker_id\n    left join project_participant on project_participant_worker.project_participant_worker_id = project_participant.project_participant_worker_id\n    left join project_participant as T on project_participant_project_participant_worker_contact.project_participant_id = T.project_participant_id"
 
 	if idname == "" {
@@ -149,7 +149,7 @@ func GetAllOrSpecified3rdPartContact(idname string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret jsonHelper.JsonStr
+	ret := new(jsonHelper.JsonStr)
 	ret.JsonArrayInit()
 
 	for rows.Next() {
@@ -206,7 +206,7 @@ func GetAllOrSpecified3rdPartContact(idname string) ([]byte, error) {
 	}
 
 	ret.JsonArrayEnd()
-	return ret.Str, nil
+	return ret, nil
 }
 
 func AddOrUpdate3rdPartContact(project_participant_worker_id string, project_participant_worker_telephone string, project_participant_worker_mobile string, project_participant_worker_email string) error {
