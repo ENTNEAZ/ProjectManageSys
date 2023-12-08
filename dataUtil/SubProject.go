@@ -2,6 +2,7 @@ package dataUtil
 
 import (
 	"Database_Homework/databaseAccess"
+	"Database_Homework/jsonHelper"
 	"strconv"
 )
 
@@ -30,8 +31,8 @@ func FindAllSubProjectInProject(idname string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret []byte
-	ret = append(ret, '[')
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 
 	for rows.Next() {
 		var projectID string
@@ -47,41 +48,22 @@ func FindAllSubProjectInProject(idname string) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-
-		ret = append(ret, '{')
-		ret = append(ret, []byte("\"project_id\":\"")...)
-		ret = append(ret, []byte(projectID)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"project_name\":\"")...)
-		ret = append(ret, []byte(projectName)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"sub_project_id\":\"")...)
-		ret = append(ret, []byte(subProjectID)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"worker_id\":\"")...)
-		ret = append(ret, []byte(workerID)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"worker_name\":\"")...)
-		ret = append(ret, []byte(workerName)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"sub_project_end_time\":\"")...)
-		ret = append(ret, []byte(subProjectEndTime)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"sub_project_fund\":\"")...)
-		ret = append(ret, []byte(subProjectFund)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"sub_project_tech_detail\":\"")...)
-		ret = append(ret, []byte(subProjectTechDetail)...)
-		ret = append(ret, []byte("\"},")...)
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrStr("project_id", projectID)
+		temp.JsonDictAddStrStr("project_name", projectName)
+		temp.JsonDictAddStrStr("sub_project_id", subProjectID)
+		temp.JsonDictAddStrStr("worker_id", workerID)
+		temp.JsonDictAddStrStr("worker_name", workerName)
+		temp.JsonDictAddStrStr("sub_project_end_time", subProjectEndTime)
+		temp.JsonDictAddStrStr("sub_project_fund", subProjectFund)
+		temp.JsonDictAddStrStr("sub_project_tech_detail", subProjectTechDetail)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
 
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, ']')
-
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 
 }
 
@@ -162,8 +144,8 @@ func FindAllSubProjectInProjectForWorker(idname string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret []byte
-	ret = append(ret, '[')
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 
 	for rows.Next() {
 		var subProjectID string
@@ -179,37 +161,21 @@ func FindAllSubProjectInProjectForWorker(idname string) ([]byte, error) {
 			return nil, err
 		}
 
-		ret = append(ret, '{')
-		ret = append(ret, []byte("\"sub_project_id\":\"")...)
-		ret = append(ret, []byte(subProjectID)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"sub_project_tech_detail\":\"")...)
-		ret = append(ret, []byte(subProjectTechDetail)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"worker_id\":\"")...)
-		ret = append(ret, []byte(workerID)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"worker_name\":\"")...)
-		ret = append(ret, []byte(workerName)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"join_time\":\"")...)
-		ret = append(ret, []byte(joinTime)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"sub_project_worker_fund\":\"")...)
-		ret = append(ret, []byte(subProjectWorkerFund)...)
-		ret = append(ret, []byte("\",")...)
-		ret = append(ret, []byte("\"workload\":\"")...)
-		ret = append(ret, []byte(workload)...)
-		ret = append(ret, []byte("\"},")...)
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrStr("sub_project_id", subProjectID)
+		temp.JsonDictAddStrStr("sub_project_tech_detail", subProjectTechDetail)
+		temp.JsonDictAddStrStr("worker_id", workerID)
+		temp.JsonDictAddStrStr("worker_name", workerName)
+		temp.JsonDictAddStrStr("join_time", joinTime)
+		temp.JsonDictAddStrStr("sub_project_worker_fund", subProjectWorkerFund)
+		temp.JsonDictAddStrStr("workload", workload)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
 
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, ']')
-
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 }
 
 func AddOrUpdateSubProjectWorker(subProjectID string, workerID string, joinTime string, subProjectWorkerFund string, workload string) error {

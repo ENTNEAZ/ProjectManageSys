@@ -2,6 +2,7 @@ package dataUtil
 
 import (
 	"Database_Homework/databaseAccess"
+	"Database_Homework/jsonHelper"
 	sql2 "database/sql"
 	"strconv"
 )
@@ -32,9 +33,8 @@ func GetAllOrSpecified3rdPartInfo(project_idname string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret []byte
-
-	ret = append(ret, []byte("[")...)
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 
 	for rows.Next() {
 		var project_participant_id int
@@ -49,16 +49,22 @@ func GetAllOrSpecified3rdPartInfo(project_idname string) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrInt("project_participant_id", project_participant_id)
+		temp.JsonDictAddStrStr("project_participant_name", project_participant_name)
+		temp.JsonDictAddStrStr("project_participant_address", project_participant_address)
+		temp.JsonDictAddStrInt("project_participant_worker_id", project_participant_worker_id)
+		temp.JsonDictAddStrStr("project_participant_worker_telephone", project_participant_worker_telephone)
+		temp.JsonDictAddStrStr("project_participant_worker_mobile", project_participant_worker_mobile)
+		temp.JsonDictAddStrStr("project_participant_worker_email", project_participant_worker_email)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 
-		ret = append(ret, []byte("{\"project_participant_id\": "+strconv.Itoa(project_participant_id)+", \"project_participant_name\": \""+project_participant_name+"\", \"project_participant_address\": \""+project_participant_address+"\", \"project_participant_worker_id\": "+strconv.Itoa(project_participant_worker_id)+", \"project_participant_worker_telephone\": \""+project_participant_worker_telephone+"\", \"project_participant_worker_mobile\": \""+project_participant_worker_mobile+"\", \"project_participant_worker_email\": \""+project_participant_worker_email+"\"},")...)
 	}
 
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-	ret = append(ret, []byte("]")...)
-
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 }
 
 func AddOrUpdate3rdPartInfo(project_participant_id string, project_participant_name string, project_participant_address string, project_participant_worker_id string) error {
@@ -143,9 +149,8 @@ func GetAllOrSpecified3rdPartContact(idname string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret []byte
-
-	ret = append(ret, []byte("[")...)
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 
 	for rows.Next() {
 		var project_participant_worker_id int
@@ -178,39 +183,30 @@ func GetAllOrSpecified3rdPartContact(idname string) ([]byte, error) {
 			project_participant_name.String = T_project_participant_name.String
 			project_participant_name.Valid = T_project_participant_name.Valid
 		}
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrInt("project_participant_worker_id", project_participant_worker_id)
+		temp.JsonDictAddStrStr("project_participant_worker_work", currentWork)
+		temp.JsonDictAddStrStr("project_participant_worker_telephone", project_participant_worker_telephone)
+		temp.JsonDictAddStrStr("project_participant_worker_mobile", project_participant_worker_mobile)
+		temp.JsonDictAddStrStr("project_participant_worker_email", project_participant_worker_email)
 
-		ret = append(ret, []byte("{\"project_participant_worker_id\":")...)
-		ret = append(ret, []byte(strconv.Itoa(project_participant_worker_id))...)
-		ret = append(ret, []byte(", \"project_participant_worker_work\": \"")...)
-		ret = append(ret, []byte(""+currentWork+"\"")...)
-		ret = append(ret, []byte(", \"project_participant_worker_telephone\": \"")...)
-		ret = append(ret, []byte(project_participant_worker_telephone)...)
-		ret = append(ret, []byte("\", \"project_participant_worker_mobile\": \"")...)
-		ret = append(ret, []byte(project_participant_worker_mobile)...)
-		ret = append(ret, []byte("\", \"project_participant_worker_email\": \"")...)
-		ret = append(ret, []byte(project_participant_worker_email)...)
-		ret = append(ret, []byte("\", \"project_participant_id\": ")...)
 		if project_participant_id.Valid {
-			ret = append(ret, []byte(strconv.Itoa(int(project_participant_id.Int32)))...)
+			temp.JsonDictAddStrInt("project_participant_id", int(project_participant_id.Int32))
 		} else {
-			ret = append(ret, []byte("\"暂无\"")...)
+			temp.JsonDictAddStrStr("project_participant_id", "暂无")
 		}
-		ret = append(ret, []byte(", \"project_participant_name\": \"")...)
 		if project_participant_name.Valid {
-			ret = append(ret, []byte(project_participant_name.String)...)
+			temp.JsonDictAddStrStr("project_participant_name", project_participant_name.String)
 		} else {
-			ret = append(ret, []byte("暂无")...)
+			temp.JsonDictAddStrStr("project_participant_name", "暂无")
 		}
-		ret = append(ret, []byte("\"},")...)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
 
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, []byte("]")...)
-
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 }
 
 func AddOrUpdate3rdPartContact(project_participant_worker_id string, project_participant_worker_telephone string, project_participant_worker_mobile string, project_participant_worker_email string) error {

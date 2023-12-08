@@ -2,6 +2,7 @@ package dataUtil
 
 import (
 	"Database_Homework/databaseAccess"
+	"Database_Homework/jsonHelper"
 	"strconv"
 )
 
@@ -22,43 +23,33 @@ func GetAllOrSpecifiedProject(idname string) ([]byte, error) {
 	}
 	defer rows.Close()
 
-	var ret []byte
-	ret = append(ret, '[')
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 	for rows.Next() {
 		var project_id, project_name, project_detail, project_start_time, project_end_time, project_fund, worker_name, project_participant_id, project_participant_name, project_supervisor_id, project_supervisor_name string
 		err := rows.Scan(&project_id, &project_name, &project_detail, &project_start_time, &project_end_time, &project_fund, &worker_name, &project_participant_id, &project_participant_name, &project_supervisor_id, &project_supervisor_name)
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, []byte("{\"project_id\":")...)
-		ret = append(ret, []byte(project_id)...)
-		ret = append(ret, []byte(",\"project_name\":\"")...)
-		ret = append(ret, []byte(project_name)...)
-		ret = append(ret, []byte("\",\"project_detail\":\"")...)
-		ret = append(ret, []byte(project_detail)...)
-		ret = append(ret, []byte("\",\"project_start_time\":\"")...)
-		ret = append(ret, []byte(project_start_time)...)
-		ret = append(ret, []byte("\",\"project_end_time\":\"")...)
-		ret = append(ret, []byte(project_end_time)...)
-		ret = append(ret, []byte("\",\"project_fund\":")...)
-		ret = append(ret, []byte(project_fund)...)
-		ret = append(ret, []byte(",\"worker_name\":\"")...)
-		ret = append(ret, []byte(worker_name)...)
-		ret = append(ret, []byte("\",\"project_participant_id\":")...)
-		ret = append(ret, []byte(project_participant_id)...)
-		ret = append(ret, []byte(",\"project_participant_name\":\"")...)
-		ret = append(ret, []byte(project_participant_name)...)
-		ret = append(ret, []byte("\",\"project_supervisor_id\":")...)
-		ret = append(ret, []byte(project_supervisor_id)...)
-		ret = append(ret, []byte(",\"project_supervisor_name\":\"")...)
-		ret = append(ret, []byte(project_supervisor_name)...)
-		ret = append(ret, []byte("\"},")...)
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrStr("project_id", project_id)
+		temp.JsonDictAddStrStr("project_name", project_name)
+		temp.JsonDictAddStrStr("project_detail", project_detail)
+		temp.JsonDictAddStrStr("project_start_time", project_start_time)
+		temp.JsonDictAddStrStr("project_end_time", project_end_time)
+		temp.JsonDictAddStrStr("project_fund", project_fund)
+		temp.JsonDictAddStrStr("worker_name", worker_name)
+		temp.JsonDictAddStrStr("project_participant_id", project_participant_id)
+		temp.JsonDictAddStrStr("project_participant_name", project_participant_name)
+		temp.JsonDictAddStrStr("project_supervisor_id", project_supervisor_id)
+		temp.JsonDictAddStrStr("project_supervisor_name", project_supervisor_name)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-	ret = append(ret, ']')
-	return ret, nil
+	ret.JsonArrayEnd()
+
+	return ret.Str, nil
 }
 
 func AddOrUpdateProject(id, name, detail, start_time, end_time, fund, worker_id, participant_id, project_supervisor_id string) error {
@@ -142,31 +133,26 @@ func FindAllWorkerInProject(idname string) ([]byte, error) {
 
 	defer rows.Close()
 
-	var ret []byte
-	ret = append(ret, '[')
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 	for rows.Next() {
 		var project_id, project_name, worker_id, worker_name string
 		err := rows.Scan(&project_id, &project_name, &worker_id, &worker_name)
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, []byte("{\"project_id\":")...)
-		ret = append(ret, []byte(project_id)...)
-		ret = append(ret, []byte(",\"project_name\":\"")...)
-		ret = append(ret, []byte(project_name)...)
-		ret = append(ret, []byte("\",\"worker_id\":")...)
-		ret = append(ret, []byte(worker_id)...)
-		ret = append(ret, []byte(",\"worker_name\":\"")...)
-		ret = append(ret, []byte(worker_name)...)
-		ret = append(ret, []byte("\"},")...)
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrStr("project_id", project_id)
+		temp.JsonDictAddStrStr("project_name", project_name)
+		temp.JsonDictAddStrStr("worker_id", worker_id)
+		temp.JsonDictAddStrStr("worker_name", worker_name)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
 
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, ']')
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 
 }
 
@@ -240,31 +226,25 @@ func FindAllParticipantInProject(projectidname string) ([]byte, error) {
 
 	defer rows.Close()
 
-	var ret []byte
-	ret = append(ret, '[')
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 	for rows.Next() {
 		var project_id, project_name, project_participant_id, project_participant_name string
 		err := rows.Scan(&project_id, &project_name, &project_participant_id, &project_participant_name)
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, []byte("{\"project_id\":")...)
-		ret = append(ret, []byte(project_id)...)
-		ret = append(ret, []byte(",\"project_name\":\"")...)
-		ret = append(ret, []byte(project_name)...)
-		ret = append(ret, []byte("\",\"project_participant_id\":")...)
-		ret = append(ret, []byte(project_participant_id)...)
-		ret = append(ret, []byte(",\"project_participant_name\":\"")...)
-		ret = append(ret, []byte(project_participant_name)...)
-		ret = append(ret, []byte("\"},")...)
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrStr("project_id", project_id)
+		temp.JsonDictAddStrStr("project_name", project_name)
+		temp.JsonDictAddStrStr("project_participant_id", project_participant_id)
+		temp.JsonDictAddStrStr("project_participant_name", project_participant_name)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
-
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, ']')
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 }
 
 func AddProjectParticipant(project_id, project_participant_id string) error {
@@ -336,41 +316,31 @@ func GetAllOrSpecifiedProjectFruit(idname string) ([]byte, error) {
 
 	defer rows.Close()
 
-	var ret []byte
-	ret = append(ret, '[')
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 	for rows.Next() {
 		var project_id, project_name, worker_id, worker_name, project_fruit_id, project_fruit_get_time, project_fruit_master_rank, project_fruit_type, project_fruit_detail string
 		err := rows.Scan(&project_id, &project_name, &worker_id, &worker_name, &project_fruit_id, &project_fruit_get_time, &project_fruit_master_rank, &project_fruit_type, &project_fruit_detail)
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, []byte("{\"project_id\":")...)
-		ret = append(ret, []byte(project_id)...)
-		ret = append(ret, []byte(",\"project_name\":\"")...)
-		ret = append(ret, []byte(project_name)...)
-		ret = append(ret, []byte("\",\"worker_id\":")...)
-		ret = append(ret, []byte(worker_id)...)
-		ret = append(ret, []byte(",\"worker_name\":\"")...)
-		ret = append(ret, []byte(worker_name)...)
-		ret = append(ret, []byte("\",\"project_fruit_id\":")...)
-		ret = append(ret, []byte(project_fruit_id)...)
-		ret = append(ret, []byte(",\"project_fruit_get_time\":\"")...)
-		ret = append(ret, []byte(project_fruit_get_time)...)
-		ret = append(ret, []byte("\",\"project_fruit_master_rank\":")...)
-		ret = append(ret, []byte(project_fruit_master_rank)...)
-		ret = append(ret, []byte(",\"project_fruit_type\":\"")...)
-		ret = append(ret, []byte(project_fruit_type)...)
-		ret = append(ret, []byte("\",\"project_fruit_detail\":\"")...)
-		ret = append(ret, []byte(project_fruit_detail)...)
-		ret = append(ret, []byte("\"},")...)
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrStr("project_id", project_id)
+		temp.JsonDictAddStrStr("project_name", project_name)
+		temp.JsonDictAddStrStr("worker_id", worker_id)
+		temp.JsonDictAddStrStr("worker_name", worker_name)
+		temp.JsonDictAddStrStr("project_fruit_id", project_fruit_id)
+		temp.JsonDictAddStrStr("project_fruit_get_time", project_fruit_get_time)
+		temp.JsonDictAddStrStr("project_fruit_master_rank", project_fruit_master_rank)
+		temp.JsonDictAddStrStr("project_fruit_type", project_fruit_type)
+		temp.JsonDictAddStrStr("project_fruit_detail", project_fruit_detail)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
 
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, ']')
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 
 }
 

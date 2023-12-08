@@ -2,7 +2,7 @@ package dataUtil
 
 import (
 	"Database_Homework/databaseAccess"
-	"strconv"
+	"Database_Homework/jsonHelper"
 )
 
 func GetAllResearchRoom() ([]byte, error) {
@@ -21,8 +21,8 @@ func GetAllResearchRoom() ([]byte, error) {
 		return nil, err
 	}
 
-	var ret []byte
-	ret = append(ret, []byte("[")...)
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 	for rows.Next() {
 		var researchRoomID int
 		var researchRoomName string
@@ -35,28 +35,20 @@ func GetAllResearchRoom() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		ret = append(ret, []byte("{\"ResearchRoomID\": ")...)
-		ret = append(ret, []byte(strconv.Itoa(researchRoomID))...)
-		ret = append(ret, []byte(", \"ResearchRoomName\": \"")...)
-		ret = append(ret, []byte(researchRoomName)...)
-		ret = append(ret, []byte("\", \"ResearchRoomDirection\": \"")...)
-		ret = append(ret, []byte(researchRoomDirection)...)
-		ret = append(ret, []byte("\", \"Worker_id\": \"")...)
-		ret = append(ret, []byte(worker_id)...)
-		ret = append(ret, []byte("\", \"Worker_name\": \"")...)
-		ret = append(ret, []byte(worker_name)...)
-		ret = append(ret, []byte("\", \"Term\": \"")...)
-		ret = append(ret, []byte(term)...)
-		ret = append(ret, []byte("\", \"Join_date\": \"")...)
-		ret = append(ret, []byte(join_date)...)
-		ret = append(ret, []byte("\"},")...)
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrInt("ResearchRoomID", researchRoomID)
+		temp.JsonDictAddStrStr("ResearchRoomName", researchRoomName)
+		temp.JsonDictAddStrStr("ResearchRoomDirection", researchRoomDirection)
+		temp.JsonDictAddStrStr("Worker_id", worker_id)
+		temp.JsonDictAddStrStr("Worker_name", worker_name)
+		temp.JsonDictAddStrStr("Term", term)
+		temp.JsonDictAddStrStr("Join_date", join_date)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-	ret = append(ret, []byte("]")...)
-
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 }
 
 func AddOrUpdateResearchRoom(id int, name string, direction string, work_id, term, join_date string) error {
@@ -136,8 +128,8 @@ func GetAllOrSpecifiedResearchRoomWorker(name_or_id string) ([]byte, error) {
 		return nil, err
 	}
 
-	var ret []byte
-	ret = append(ret, []byte("[")...)
+	var ret jsonHelper.JsonStr
+	ret.JsonArrayInit()
 	for rows.Next() {
 		var workerID int
 		var workerName string
@@ -148,24 +140,17 @@ func GetAllOrSpecifiedResearchRoomWorker(name_or_id string) ([]byte, error) {
 			return nil, err
 		}
 
-		ret = append(ret, []byte("{\"worker_id\": ")...)
-		ret = append(ret, []byte(strconv.Itoa(workerID))...)
-		ret = append(ret, []byte(", \"worker_name\": \"")...)
-		ret = append(ret, []byte(workerName)...)
-		ret = append(ret, []byte("\", \"research_room_name\": \"")...)
-		ret = append(ret, []byte(researchRoomName)...)
-		ret = append(ret, []byte("\", \"direction\": \"")...)
-		ret = append(ret, []byte(direction)...)
-		ret = append(ret, []byte("\"},")...)
+		var temp jsonHelper.JsonStr
+		temp.JsonDictInit()
+		temp.JsonDictAddStrInt("worker_id", workerID)
+		temp.JsonDictAddStrStr("worker_name", workerName)
+		temp.JsonDictAddStrStr("research_room_name", researchRoomName)
+		temp.JsonDictAddStrStr("direction", direction)
+		temp.JsonDictEnd()
+		ret.JsonArrayAddJson(temp)
 	}
-
-	if len(ret) > 1 {
-		ret = ret[:len(ret)-1]
-	}
-
-	ret = append(ret, []byte("]")...)
-
-	return ret, nil
+	ret.JsonArrayEnd()
+	return ret.Str, nil
 }
 
 func AddOrUpdateResearchRoomWorker(worker_id int, research_room_id int, direction string) error {
