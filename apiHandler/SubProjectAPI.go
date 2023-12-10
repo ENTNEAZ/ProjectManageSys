@@ -6,6 +6,9 @@ import (
 )
 
 func FindAllSubProjectInProject(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	idname := r.URL.Query().Get("idname")
 
@@ -22,6 +25,9 @@ func FindAllSubProjectInProject(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateOrDeleteSpecifiedSubProject(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method == "GET" {
 		project_id := r.URL.Query().Get("project_id")
@@ -69,6 +75,9 @@ func AddOrUpdateOrDeleteSpecifiedSubProject(w http.ResponseWriter, r *http.Reque
 }
 
 func FindAllSubProjectInProjectForWorker(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	idname := r.URL.Query().Get("idname")
 
@@ -85,6 +94,9 @@ func FindAllSubProjectInProjectForWorker(w http.ResponseWriter, r *http.Request)
 }
 
 func AddOrUpdateOrDeleteSpecifiedSubProjectWorker(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method == "GET" {
 		sub_project_id := r.URL.Query().Get("sub_project_id")

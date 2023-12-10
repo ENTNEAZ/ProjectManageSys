@@ -6,6 +6,9 @@ import (
 )
 
 func GetAllOrSpecifiedProject(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	project_idname := r.URL.Query().Get("project_idname")
 
@@ -20,6 +23,9 @@ func GetAllOrSpecifiedProject(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateOrDeleteProject(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method == "GET" {
 		project_id := r.URL.Query().Get("project_id")
@@ -72,6 +78,9 @@ func AddOrUpdateOrDeleteProject(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func FindAllWorkerInProject(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	project_id := r.URL.Query().Get("idname")
 
@@ -87,6 +96,9 @@ func FindAllWorkerInProject(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrDeleteProjectWorker(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	if r.Method == "GET" {
 		w.Header().Set("Content-Type", "application/json")
 		project_id := r.URL.Query().Get("project_id")
@@ -135,6 +147,9 @@ func AddOrDeleteProjectWorker(w http.ResponseWriter, r *http.Request) {
 }
 
 func FindAllParticipantInProject(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	project_id := r.URL.Query().Get("idname")
 
@@ -150,6 +165,9 @@ func FindAllParticipantInProject(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrDeleteProjectParticipant(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	if r.Method == "GET" {
 		w.Header().Set("Content-Type", "application/json")
 		project_id := r.URL.Query().Get("project_id")
@@ -198,6 +216,9 @@ func AddOrDeleteProjectParticipant(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllOrSpecifiedProjectFruit(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	project_id := r.URL.Query().Get("idname")
 
@@ -213,6 +234,9 @@ func GetAllOrSpecifiedProjectFruit(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateOrDeleteProjectFruit(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	if r.Method == "GET" {
 		w.Header().Set("Content-Type", "application/json")
 		project_id := r.URL.Query().Get("project_id")

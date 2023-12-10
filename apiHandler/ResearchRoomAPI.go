@@ -7,6 +7,9 @@ import (
 )
 
 func GetAllResearchRoom(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	researchRoom, err := dataUtil.GetAllResearchRoom()
 	if err != nil {
@@ -21,6 +24,9 @@ func GetAllResearchRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateResearchRoom(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("id")
 	name := r.URL.Query().Get("name")
@@ -58,6 +64,9 @@ func AddOrUpdateResearchRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteResearchRoom(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("id")
 
@@ -86,6 +95,9 @@ func DeleteResearchRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllOrSpecifiedResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	name_or_id := r.URL.Query().Get("name_or_id")
 
@@ -101,6 +113,9 @@ func GetAllOrSpecifiedResearchRoomWorker(w http.ResponseWriter, r *http.Request)
 }
 
 func AddOrUpdateResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	workerID := r.URL.Query().Get("worker_id")
 	roomID := r.URL.Query().Get("research_room_id")
@@ -139,6 +154,9 @@ func AddOrUpdateResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	workerID := r.URL.Query().Get("worker_id")
 	roomID := r.URL.Query().Get("research_room_id")

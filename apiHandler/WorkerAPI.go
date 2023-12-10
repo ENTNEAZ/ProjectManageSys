@@ -7,6 +7,9 @@ import (
 )
 
 func GetWorkerByID(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("id")
 	idi, err := strconv.Atoi(id)
@@ -29,6 +32,9 @@ func GetWorkerByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllWorker(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	workers, err := dataUtil.GetAllWorker()
 	if err != nil {
@@ -43,6 +49,9 @@ func GetAllWorker(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateWorker(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	name := r.URL.Query().Get("WorkerName")
 	gender := r.URL.Query().Get("WorkerGender")
@@ -83,6 +92,9 @@ func AddOrUpdateWorker(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteWorkerByID(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("WorkerId")
 	idi, err := strconv.Atoi(id)

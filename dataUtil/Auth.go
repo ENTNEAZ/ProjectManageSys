@@ -3,6 +3,7 @@ package dataUtil
 import (
 	"Database_Homework/databaseAccess"
 	"math/rand"
+	"net/http"
 	"strconv"
 )
 
@@ -73,5 +74,31 @@ func GetCookieUser(cookie string) (s string, err error) {
 		return s, nil
 	} else {
 		return "", nil
+	}
+}
+
+func CheckCookieValid(r *http.Request) bool {
+	cookie, err := r.Cookie("SessionID")
+	if err != nil || cookie.Value == "" {
+		return false
+	}
+
+	res, err := GetCookieUser(cookie.Value)
+	if err != nil || res == "" {
+		return false
+	}
+	return true
+}
+
+func AutoCookieChecker(w http.ResponseWriter, r *http.Request) bool {
+	valid := CheckCookieValid(r)
+	if valid {
+		return true
+	} else {
+		w.Header().Set("Location", "/")
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(401)
+		w.Write([]byte("{\"code\": -1, \"msg\": \"not login\"}"))
+		return false
 	}
 }

@@ -8,6 +8,9 @@ import (
 )
 
 func GetAllOrSpecifiedSectary(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("id_or_name")
 	idi, err := strconv.Atoi(id)
@@ -52,6 +55,9 @@ func GetAllOrSpecifiedSectary(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateSectary(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("worker_id")
 	roomID := r.URL.Query().Get("research_room_id")
@@ -84,6 +90,9 @@ func AddOrUpdateSectary(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteSectary(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("worker_id")
 	roomID := r.URL.Query().Get("research_room_id")

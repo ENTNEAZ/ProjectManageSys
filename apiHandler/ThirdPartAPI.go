@@ -6,6 +6,9 @@ import (
 )
 
 func GetAllOrSpecified3rdPartInfo(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	third_part_idname := r.URL.Query().Get("idname")
 
@@ -20,6 +23,9 @@ func GetAllOrSpecified3rdPartInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateOrDelete3rdPartInfo(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method == "GET" {
 		project_participant_id := r.URL.Query().Get("project_participant_id")
@@ -65,6 +71,9 @@ func AddOrUpdateOrDelete3rdPartInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllOrSpecified3rdPartContact(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	third_part_idname := r.URL.Query().Get("idname")
 
@@ -80,6 +89,9 @@ func GetAllOrSpecified3rdPartContact(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateOrDelete3rdPartContact(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	if r.Method == "GET" {
 		w.Header().Set("Content-Type", "application/json")
 		project_participant_worker_id := r.URL.Query().Get("project_participant_worker_id")
@@ -126,6 +138,9 @@ func AddOrUpdateOrDelete3rdPartContact(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrDeleteContactRelation(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	if r.Method == "GET" {
 		w.Header().Set("Content-Type", "application/json")
 		project_participant_worker_id := r.URL.Query().Get("project_participant_worker_id")

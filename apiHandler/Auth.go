@@ -15,8 +15,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("{\"code\": -1, \"msg\": \"login failed\"}"))
 		return
 	}
-
-	w.Header().Set("Set-Cookie", cookie)
+	var sendCookie = "SessionID=" + cookie + "; path=/; HttpOnly;"
+	w.Header().Set("Set-Cookie", sendCookie)
 	w.Header().Set("Location", "/main/worker/")
 	w.WriteHeader(302)
 	w.Write([]byte("{\"code\": 0, \"msg\": \"success\"}"))
@@ -34,7 +34,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Set-Cookie", cookie)
+	var sendCookie = "SessionID=" + cookie + "; path=/; HttpOnly;"
+	w.Header().Set("Set-Cookie", sendCookie)
 	w.Header().Add("Location", "/main/worker/")
 	w.WriteHeader(302)
 	w.Write([]byte("{\"code\": 0, \"msg\": \"success\"}"))

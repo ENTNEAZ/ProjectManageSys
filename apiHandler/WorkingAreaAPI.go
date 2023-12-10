@@ -8,6 +8,9 @@ import (
 )
 
 func GetAllOrSpecifiedWorkingArea(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("id_or_name")
 	idi, err := strconv.Atoi(id)
@@ -48,6 +51,9 @@ func GetAllOrSpecifiedWorkingArea(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddOrUpdateWorkingAreaSubmit(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("id")
 	size := r.URL.Query().Get("size")
@@ -91,6 +97,9 @@ func AddOrUpdateWorkingAreaSubmit(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddWorkingAreaForResearchRoom(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	researchRoomID := r.URL.Query().Get("research_room_id")
 	workingAreaID := r.URL.Query().Get("working_area_id")
@@ -128,6 +137,9 @@ func AddWorkingAreaForResearchRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteWorkingAreaForResearchRoom(w http.ResponseWriter, r *http.Request) {
+	if !dataUtil.AutoCookieChecker(w, r) {
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	researchRoomID := r.URL.Query().Get("research_room_id")
 	workingAreaID := r.URL.Query().Get("working_area_id")
