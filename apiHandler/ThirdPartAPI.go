@@ -13,9 +13,8 @@ func GetAllOrSpecified3rdPartInfo(w http.ResponseWriter, r *http.Request) {
 	third_part_idname := r.URL.Query().Get("idname")
 
 	res, err := dataUtil.GetAllOrSpecified3rdPartInfo(third_part_idname)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"get all or specified third_part error\"}"))
+	if !dataUtil.HandleError(err, w) {
+		return
 	}
 
 	w.WriteHeader(200)
@@ -41,9 +40,7 @@ func AddOrUpdateOrDelete3rdPartInfo(w http.ResponseWriter, r *http.Request) {
 
 		err := dataUtil.AddOrUpdate3rdPartInfo(project_participant_id, project_participant_name, project_participant_address, project_participant_worker_id)
 
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or update third_part error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -59,9 +56,7 @@ func AddOrUpdateOrDelete3rdPartInfo(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.Delete3rdPartInfo(project_participant_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"delete third_part error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -78,9 +73,7 @@ func GetAllOrSpecified3rdPartContact(w http.ResponseWriter, r *http.Request) {
 	third_part_idname := r.URL.Query().Get("idname")
 
 	res, err := dataUtil.GetAllOrSpecified3rdPartContact(third_part_idname)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"get all or specified third_part contact error\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -107,9 +100,7 @@ func AddOrUpdateOrDelete3rdPartContact(w http.ResponseWriter, r *http.Request) {
 
 		err := dataUtil.AddOrUpdate3rdPartContact(project_participant_worker_id, project_participant_worker_telephone, project_participant_worker_mobile, project_participant_worker_email)
 
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or update third_part contact error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -126,9 +117,7 @@ func AddOrUpdateOrDelete3rdPartContact(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.Delete3rdPartContact(project_participant_worker_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"delete third_part contact error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -153,9 +142,7 @@ func AddOrDeleteContactRelation(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.AddContactRelation(project_participant_worker_id, project_participant_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or delete contact relation error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -173,9 +160,7 @@ func AddOrDeleteContactRelation(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.DeleteContactRelation(project_participant_worker_id, project_participant_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or delete contact relation error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 

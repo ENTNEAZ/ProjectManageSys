@@ -13,16 +13,12 @@ func GetWorkerByID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("id")
 	idi, err := strconv.Atoi(id)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 	worker, err := dataUtil.GetWorkerByID(idi)
 
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"get worker by id failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -37,9 +33,7 @@ func GetAllWorker(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	workers, err := dataUtil.GetAllWorker()
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"get all worker failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -72,18 +66,14 @@ func AddOrUpdateWorker(w http.ResponseWriter, r *http.Request) {
 	if id != "" {
 		var err error
 		idi, err = strconv.Atoi(id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"id is not a number\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 	}
 
 	err := dataUtil.AddOrUpdateWorker(idi, name, gender, birth, joinTime, job)
 
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"add worker failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -98,16 +88,12 @@ func DeleteWorkerByID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	id := r.URL.Query().Get("WorkerId")
 	idi, err := strconv.Atoi(id)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 	err = dataUtil.DeleteWorker(idi)
 
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"delete worker by id failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 

@@ -19,27 +19,21 @@ func GetAllOrSpecifiedWorkingArea(w http.ResponseWriter, r *http.Request) {
 	var ret jsonHelper.JsonStr
 	if isIDInt {
 		rs, err := dataUtil.GetWorkingAreaByResearchRoomID(idi)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"get working area by research room id failed\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 		ret.CombineWith(*rs)
 	}
 	if id == "" {
 		rs, err := dataUtil.GetAllWorkingArea()
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"get all working area failed\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
 		ret.CombineWith(*rs)
 	} else {
 		rs, err := dataUtil.GetWorkingAreaByResearchRoomName(id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"get working area by research room name failed\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -69,25 +63,19 @@ func AddOrUpdateWorkingAreaSubmit(w http.ResponseWriter, r *http.Request) {
 	if id != "" {
 		var err error
 		idi, err = strconv.Atoi(id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"id is not a number\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 	}
 
 	sizei, err := strconv.Atoi(size)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"size is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	err = dataUtil.AddOrUpdateWorkingArea(idi, sizei, address)
 
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"add or update working area failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -111,23 +99,17 @@ func AddWorkingAreaForResearchRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	researchRoomIDi, err := strconv.Atoi(researchRoomID)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"research_room_id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	workingAreaIDi, err := strconv.Atoi(workingAreaID)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"working_area_id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	err = dataUtil.AddWorkingAreaForResearchRoom(workingAreaIDi, researchRoomIDi)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"add working area for research room failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -151,23 +133,17 @@ func DeleteWorkingAreaForResearchRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	researchRoomIDi, err := strconv.Atoi(researchRoomID)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"research_room_id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	workingAreaIDi, err := strconv.Atoi(workingAreaID)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"working_area_id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	err = dataUtil.DeleteWorkingAreaForResearchRoom(workingAreaIDi, researchRoomIDi)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"add working area for research room failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 

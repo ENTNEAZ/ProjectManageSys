@@ -13,9 +13,7 @@ func FindAllSubProjectInProject(w http.ResponseWriter, r *http.Request) {
 	idname := r.URL.Query().Get("idname")
 
 	res, err := dataUtil.FindAllSubProjectInProject(idname)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"find all sub project in project error\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -45,9 +43,7 @@ func AddOrUpdateOrDeleteSpecifiedSubProject(w http.ResponseWriter, r *http.Reque
 
 		err := dataUtil.AddOrUpdateSubProject(project_id, sub_project_id, worker_id, sub_project_end_time, sub_project_fund, sub_project_tech_detail)
 
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or update sub project error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -63,9 +59,7 @@ func AddOrUpdateOrDeleteSpecifiedSubProject(w http.ResponseWriter, r *http.Reque
 		}
 
 		err := dataUtil.DeleteSubProject(sub_project_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"delete sub project error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -82,9 +76,7 @@ func FindAllSubProjectInProjectForWorker(w http.ResponseWriter, r *http.Request)
 	idname := r.URL.Query().Get("idname")
 
 	res, err := dataUtil.FindAllSubProjectInProjectForWorker(idname)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"find all sub project in project for worker error\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -113,9 +105,7 @@ func AddOrUpdateOrDeleteSpecifiedSubProjectWorker(w http.ResponseWriter, r *http
 
 		err := dataUtil.AddOrUpdateSubProjectWorker(sub_project_id, worker_id, join_time, sub_project_worker_fund, workload)
 
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or update sub project worker error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -133,9 +123,7 @@ func AddOrUpdateOrDeleteSpecifiedSubProjectWorker(w http.ResponseWriter, r *http
 		}
 
 		err := dataUtil.DeleteSubProjectWorker(sub_project_id, worker_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"delete sub project worker error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 

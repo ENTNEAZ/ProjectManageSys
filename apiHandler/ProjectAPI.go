@@ -13,9 +13,8 @@ func GetAllOrSpecifiedProject(w http.ResponseWriter, r *http.Request) {
 	project_idname := r.URL.Query().Get("project_idname")
 
 	res, err := dataUtil.GetAllOrSpecifiedProject(project_idname)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"get all or specified project error\"}"))
+	if !dataUtil.HandleError(err, w) {
+		return
 	}
 
 	w.WriteHeader(200)
@@ -45,9 +44,7 @@ func AddOrUpdateOrDeleteProject(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.AddOrUpdateProject(project_id, project_name, project_detail, project_start_time, project_end_time, project_fund, worker_id, project_participant_id, project_supervisor_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or update project error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -63,9 +60,7 @@ func AddOrUpdateOrDeleteProject(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.DeleteProject(project_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"delete project error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -85,9 +80,7 @@ func FindAllWorkerInProject(w http.ResponseWriter, r *http.Request) {
 	project_id := r.URL.Query().Get("idname")
 
 	res, err := dataUtil.FindAllWorkerInProject(project_id)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"find all worker in project error\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -111,9 +104,7 @@ func AddOrDeleteProjectWorker(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.AddProjectWorker(project_id, worker_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or update project worker error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -131,9 +122,7 @@ func AddOrDeleteProjectWorker(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.DeleteProjectWorker(project_id, worker_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"delete project worker error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -154,9 +143,7 @@ func FindAllParticipantInProject(w http.ResponseWriter, r *http.Request) {
 	project_id := r.URL.Query().Get("idname")
 
 	res, err := dataUtil.FindAllParticipantInProject(project_id)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"find all participant in project error\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -180,9 +167,7 @@ func AddOrDeleteProjectParticipant(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.AddProjectParticipant(project_id, project_participant_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or update project participant error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -200,9 +185,7 @@ func AddOrDeleteProjectParticipant(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.DeleteProjectParticipant(project_id, project_participant_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"delete project participant error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -223,9 +206,7 @@ func GetAllOrSpecifiedProjectFruit(w http.ResponseWriter, r *http.Request) {
 	project_id := r.URL.Query().Get("idname")
 
 	res, err := dataUtil.GetAllOrSpecifiedProjectFruit(project_id)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"get all or specified project fruit error\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -255,9 +236,7 @@ func AddOrUpdateOrDeleteProjectFruit(w http.ResponseWriter, r *http.Request) {
 
 		err := dataUtil.AddOrUpdateProjectFruit(project_id, worker_id, project_fruit_id, project_fruit_get_time, project_fruit_master_rank, project_fruit_type, project_fruit_detail)
 
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"add or update project fruit error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 
@@ -275,9 +254,7 @@ func AddOrUpdateOrDeleteProjectFruit(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err := dataUtil.DeleteProjectFruit(project_fruit_id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"delete project fruit error\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 

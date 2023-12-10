@@ -12,9 +12,7 @@ func GetAllResearchRoom(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	researchRoom, err := dataUtil.GetAllResearchRoom()
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"get all research room failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -45,17 +43,13 @@ func AddOrUpdateResearchRoom(w http.ResponseWriter, r *http.Request) {
 	if id != "" {
 		var err error
 		idi, err = strconv.Atoi(id)
-		if err != nil {
-			w.WriteHeader(400)
-			w.Write([]byte("{\"code\": -1, \"msg\": \"id is not a number\"}"))
+		if !dataUtil.HandleError(err, w) {
 			return
 		}
 	}
 
 	err := dataUtil.AddOrUpdateResearchRoom(idi, name, direction, work_id, term, join_date)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"add or update research room failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -77,16 +71,12 @@ func DeleteResearchRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	idi, err := strconv.Atoi(id)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	err = dataUtil.DeleteResearchRoom(idi)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"delete research room failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -102,9 +92,7 @@ func GetAllOrSpecifiedResearchRoomWorker(w http.ResponseWriter, r *http.Request)
 	name_or_id := r.URL.Query().Get("name_or_id")
 
 	res, err := dataUtil.GetAllOrSpecifiedResearchRoomWorker(name_or_id)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"get all or specified research room worker failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -128,23 +116,17 @@ func AddOrUpdateResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
 	}
 
 	workerIDI, err := strconv.Atoi(workerID)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"worker id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	roomIDI, err := strconv.Atoi(roomID)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"research room id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	err = dataUtil.AddOrUpdateResearchRoomWorker(workerIDI, roomIDI, direction)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"add or update research room worker failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
@@ -168,23 +150,17 @@ func DeleteResearchRoomWorker(w http.ResponseWriter, r *http.Request) {
 	}
 
 	workerIDI, err := strconv.Atoi(workerID)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"worker id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	roomIDI, err := strconv.Atoi(roomID)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"research room id is not a number\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
 	err = dataUtil.DeleteResearchRoomWorker(workerIDI, roomIDI)
-	if err != nil {
-		w.WriteHeader(400)
-		w.Write([]byte("{\"code\": -1, \"msg\": \"delete research room worker failed\"}"))
+	if !dataUtil.HandleError(err, w) {
 		return
 	}
 
